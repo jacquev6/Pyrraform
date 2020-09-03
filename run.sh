@@ -11,5 +11,7 @@ docker run \
   --interactive --tty \
   --rm \
   --volume $PWD/src/Pyrraform:/pyrraform/Pyrraform \
+  --volume $PWD/test-resources:/resources \
+  --workdir /resources \
   $image \
   bash
