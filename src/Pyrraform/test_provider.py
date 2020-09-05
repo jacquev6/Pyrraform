@@ -1,3 +1,4 @@
+import os
 import sys
 import time
 import logging
@@ -15,6 +16,8 @@ log = logging.getLogger(__name__)
 
 def main():
     log.info(f"Enter main with command-line {sys.argv}")
+    for k, v in os.environ.items():
+        log.info(f"Environment variable: {k}={v}")
     for _ in range(20):
         log.debug("Passing some time in main")
         time.sleep(0.05)
