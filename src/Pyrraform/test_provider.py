@@ -1,8 +1,13 @@
 import os
 import sys
-import time
 import logging
+import concurrent.futures
+import datetime
 import socket
+
+import grpc
+import cryptography.hazmat.primitives.asymmetric.rsa
+
 
 logging.basicConfig(
     filename="/terraform-provider-pyrraform-test.log",
@@ -19,21 +24,67 @@ def main():
     log.info(f"Enter main with command-line {sys.argv}")
     for k, v in os.environ.items():
         log.debug(f"Environment variable: {k}={v}")
-    sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-    try:
-        os.remove("/tmp/test-1")
-    except FileNotFoundError:
-        pass
-    sock.bind("/tmp/test-1")
-    sock.listen(1)
-    log.info("Listening")
-    print("1|5|unix|/tmp/test-1|grpc|MIICMTCCAZKgAwIBAgIRAN1XRhBbJVxM+c8cHIFaNrMwCgYIKoZIzj0EAwQwKDESMBAGA1UEChMJSGFzaGlDb3JwMRIwEAYDVQQDEwlsb2NhbGhvc3QwIBcNMjAwOTA1MTMzODEzWhgPMjA1MDA5MDYwMTM4NDNaMCgxEjAQBgNVBAoTCUhhc2hpQ29ycDESMBAGA1UEAxMJbG9jYWxob3N0MIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQA+6vAQmkU/bBDE6l1PUm3dYl4I85k8YGeME35bnVhyaeP1Ya3mLDA+he2TJ8Gr8QhvoBuDb8bh1LaQauiaUm1v30Ber5Bz1ICdA2eACkm7nK8zaA32kHs3z72mWHEXBkrH60h5X9g5bNU10aPv/l/N2vLMkR86+5y4QBQ0jUuVeNZVw2jWDBWMA4GA1UdDwEB/wQEAwICrDAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEwDwYDVR0TAQH/BAUwAwEB/zAUBgNVHREEDTALgglsb2NhbGhvc3QwCgYIKoZIzj0EAwQDgYwAMIGIAkIA3b31jEqTyexzBKEqrg59tzibMd2Ot+H3Xe+F7kW0uWbuvbWLO8F8Ppl1U/gzZASpP2ZlAtgOwesGI/7AJwkOg8kCQgFdhlVvSf8Jieyi2eiqfr0Z6ftPJGB/ZAO2OvgBkLXjtQCWZseH1mw8SB4Q1UwtFDEN8i4EyFARs9AkUqfFGDTGmA", flush=True)
-    while True:
-        connection, _ = sock.accept()
-        log.info(f"Connection accepted")
-        try:
-            data = connection.recv(16)
-            log.info(f"Data received: {data}")
-        finally:
-            connection.close()
+
+    (certificate, private_key) = generate_certificate()
+    log.debug(f"Server certificate: {certificate.decode('utf-8')}")
+    with open("provider-pyrraform-test.cert.pem", "wb") as f:
+        f.write(certificate)
+    raw_base64_certificate = ''.join(certificate.decode('utf-8').splitlines()[1:-1]).rstrip("=")
+
+    server = grpc.server(concurrent.futures.ThreadPoolExecutor(max_workers=10))
+    print("This is terraform-provider-pyrraform-test's stderr", file=sys.stderr)
+    server.add_secure_port(
+        "unix:///tmp/test-1",
+        grpc.ssl_server_credentials(
+            [(private_key, certificate)],
+            root_certificates=None,
+            require_client_auth=False,
+        ),
+    )
+    server.start()
+    log.info("Server started")
+    handshake = f"1|5|unix|/tmp/test-1|grpc|{raw_base64_certificate}"
+    log.debug(f"Handshake: '{handshake}'")
+    print(handshake, flush=True)
+    server.wait_for_termination()
+
     log.info("Exit main")
+
+
+def generate_certificate():
+    one_day = datetime.timedelta(1, 0, 0)
+    private_key = cryptography.hazmat.primitives.asymmetric.rsa.generate_private_key(
+            public_exponent=65537,
+            key_size=2048,
+            backend=cryptography.hazmat.backends.default_backend())
+    public_key = private_key.public_key()
+
+    builder = cryptography.x509.CertificateBuilder()
+    builder = builder.subject_name(cryptography.x509.Name([cryptography.x509.NameAttribute(cryptography.x509.oid.NameOID.COMMON_NAME, socket.gethostname())]))
+    builder = builder.issuer_name(cryptography.x509.Name([cryptography.x509.NameAttribute(cryptography.x509.oid.NameOID.COMMON_NAME, socket.gethostname())]))
+    builder = builder.not_valid_before(datetime.datetime.today() - one_day)
+    builder = builder.not_valid_after(datetime.datetime.today() + (one_day*365*5))
+    builder = builder.serial_number(cryptography.x509.random_serial_number())
+    builder = builder.public_key(public_key)
+    builder = builder.add_extension(
+        cryptography.x509.SubjectAlternativeName([
+            cryptography.x509.DNSName(socket.gethostname()),
+            cryptography.x509.DNSName('*.%s' % socket.gethostname()),
+            cryptography.x509.DNSName('localhost'),
+            cryptography.x509.DNSName('*.localhost'),
+        ]),
+        critical=False)
+    builder = builder.add_extension(cryptography.x509.BasicConstraints(ca=True, path_length=None), critical=True)
+
+    certificate = builder.sign(
+        private_key=private_key, algorithm=cryptography.hazmat.primitives.hashes.SHA256(),
+        backend=cryptography.hazmat.backends.default_backend())
+
+    return (
+        certificate.public_bytes(cryptography.hazmat.primitives.serialization.Encoding.PEM),
+        private_key.private_bytes(
+            cryptography.hazmat.primitives.serialization.Encoding.PEM,
+            cryptography.hazmat.primitives.serialization.PrivateFormat.PKCS8,
+            cryptography.hazmat.primitives.serialization.NoEncryption(),
+        ),
+    )
