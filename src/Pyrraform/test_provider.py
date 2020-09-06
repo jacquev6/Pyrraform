@@ -31,12 +31,17 @@ def main():
         f.write(certificate)
     raw_base64_certificate = ''.join(certificate.decode('utf-8').splitlines()[1:-1]).rstrip("=")
 
+    # @todo Check TF_PLUGIN_MAGIC_COOKIE
+
     server = grpc.server(concurrent.futures.ThreadPoolExecutor(max_workers=10))
-    print("This is terraform-provider-pyrraform-test's stderr", file=sys.stderr)
+
+    # @todo Generate a random name for the Unix socket to avoid collisions
+    # @todo Support Windows by using a TCP socket
     server.add_secure_port(
         "unix:///tmp/test-1",
         grpc.ssl_server_credentials(
             [(private_key, certificate)],
+            # @todo Use PLUGIN_CLIENT_CERT to authentify the client
             root_certificates=None,
             require_client_auth=False,
         ),
