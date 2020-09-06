@@ -23,4 +23,4 @@ function diagnose {
 
 trap diagnose EXIT
 
-TF_LOG=TRACE terraform plan
+TF_LOG=TRACE terraform apply

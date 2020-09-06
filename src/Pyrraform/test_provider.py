@@ -14,7 +14,7 @@ from . import tfplugin5_0_pb2_grpc
 
 logging.basicConfig(
     filename="/terraform-provider-pyrraform-test.log",
-    level=logging.DEBUG,
+    level=logging.INFO,
     format="{asctime}.{msecs:03.0f}:{levelname}:{name}:{message}",
     style="{",
     datefmt="%Y%m%d-%H%M%S",
@@ -102,6 +102,7 @@ def generate_certificate():
 
 class ProviderServicer(tfplugin5_0_pb2_grpc.ProviderServicer):
     def GetSchema(self, request, context):
+        log.info("GetSchema")
         return tfplugin5_0_pb2.GetProviderSchema.Response(
             provider=tfplugin5_0_pb2.Schema(
                 version=1,
@@ -112,6 +113,51 @@ class ProviderServicer(tfplugin5_0_pb2_grpc.ProviderServicer):
                 )
             ),
             resource_schemas={},
-            data_source_schemas={},
+            data_source_schemas={
+                "pyrraform-test_answer": tfplugin5_0_pb2.Schema(
+                    version=1,
+                    block=tfplugin5_0_pb2.Schema.Block(
+                        version=1,
+                        attributes=[
+                            tfplugin5_0_pb2.Schema.Attribute(
+                                name="foo",
+                                # Type system:
+                                # https://github.com/zclconf/go-cty/blob/4e1b2a3ccc87ef459dac0e425f139c117a2d790f/cty/json.go#L16
+                                type=b'"string"',
+                            ),
+                        ],
+                        block_types=[],
+                    )
+                ),
+            },
+            diagnostics=[],
+        )
+
+    def PrepareProviderConfig(self, request, context):
+        log.info(f"PrepareProviderConfig: {request}")
+        return tfplugin5_0_pb2.PrepareProviderConfig.Response(
+            prepared_config=request.config,
+            diagnostics=[],
+        )
+
+    def ValidateDataSourceConfig(self, request, context):
+        log.info(f"ValidateDataSourceConfig: {request}")
+        return tfplugin5_0_pb2.ValidateDataSourceConfig.Response(
+            diagnostics=[],
+        )
+
+    def Configure(self, request, context):
+        log.info(f"Configure: {request}")
+        return tfplugin5_0_pb2.Configure.Response(
+            diagnostics=[],
+        )
+
+    def ReadDataSource(self, request, context):
+        log.info(f"ReadDataSource: {request}")
+        return tfplugin5_0_pb2.ReadDataSource.Response(
+            state=tfplugin5_0_pb2.DynamicValue(
+                msgpack=b"\201\243foo\243luv",
+                # json=b'{"answer": 42}',
+            ),
             diagnostics=[],
         )
