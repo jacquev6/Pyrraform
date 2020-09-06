@@ -56,6 +56,8 @@ def main():
     handshake = f"1|5|unix|/tmp/test-1|grpc|{raw_base64_certificate}"
     log.debug(f"Handshake: '{handshake}'")
     print(handshake, flush=True)
+    # @todo Handle shutdown properly
+    # (I assume that Terraform sends some signal(s) to its plugins)
     server.wait_for_termination()
 
     log.info("Exit main")
@@ -156,8 +158,8 @@ class ProviderServicer(tfplugin5_0_pb2_grpc.ProviderServicer):
         log.info(f"ReadDataSource: {request}")
         return tfplugin5_0_pb2.ReadDataSource.Response(
             state=tfplugin5_0_pb2.DynamicValue(
+                # @todo Use https://pypi.org/project/u-msgpack-python/
                 msgpack=b"\201\243foo\243luv",
-                # json=b'{"answer": 42}',
             ),
             diagnostics=[],
         )
