@@ -8,6 +8,9 @@ import socket
 import grpc
 import cryptography.hazmat.primitives.asymmetric.rsa
 
+from . import tfplugin5_0_pb2
+from . import tfplugin5_0_pb2_grpc
+
 
 logging.basicConfig(
     filename="/terraform-provider-pyrraform-test.log",
@@ -34,6 +37,8 @@ def main():
     # @todo Check TF_PLUGIN_MAGIC_COOKIE
 
     server = grpc.server(concurrent.futures.ThreadPoolExecutor(max_workers=10))
+
+    tfplugin5_0_pb2_grpc.add_ProviderServicer_to_server(ProviderServicer(), server)
 
     # @todo Generate a random name for the Unix socket to avoid collisions
     # @todo Support Windows by using a TCP socket
@@ -93,3 +98,20 @@ def generate_certificate():
             cryptography.hazmat.primitives.serialization.NoEncryption(),
         ),
     )
+
+
+class ProviderServicer(tfplugin5_0_pb2_grpc.ProviderServicer):
+    def GetSchema(self, request, context):
+        return tfplugin5_0_pb2.GetProviderSchema.Response(
+            provider=tfplugin5_0_pb2.Schema(
+                version=1,
+                block=tfplugin5_0_pb2.Schema.Block(
+                    version=1,
+                    attributes=[],
+                    block_types=[],
+                )
+            ),
+            resource_schemas={},
+            data_source_schemas={},
+            diagnostics=[],
+        )
