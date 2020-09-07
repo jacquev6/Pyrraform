@@ -46,9 +46,8 @@ def main():
         "unix:///tmp/test-1",
         grpc.ssl_server_credentials(
             [(private_key, certificate)],
-            # @todo Use PLUGIN_CLIENT_CERT to authentify the client
-            root_certificates=None,
-            require_client_auth=False,
+            root_certificates=os.environ["PLUGIN_CLIENT_CERT"],
+            require_client_auth=True,
         ),
     )
     server.start()
