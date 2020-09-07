@@ -1,3 +1,4 @@
 /.terraform/
 /provider-pyrraform-test.cert.pem
 /terraform.tfstate.backup
+/uptimerobot.auto.tfvars
