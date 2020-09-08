@@ -4,6 +4,7 @@ import logging
 import concurrent.futures
 import datetime
 import socket
+import textwrap
 
 import grpc
 import cryptography.hazmat.primitives.asymmetric.rsa
@@ -36,7 +37,15 @@ def main():
         f.write(certificate)
     raw_base64_certificate = ''.join(certificate.decode('utf-8').splitlines()[1:-1]).rstrip("=")
 
-    # @todo Check TF_PLUGIN_MAGIC_COOKIE
+    if os.environ.get("TF_PLUGIN_MAGIC_COOKIE") != "d602bf8f470bc67ca7faa0386276bbdd4330efaf76d1a219cb4d6991ca9872b2":
+        print(
+            textwrap.dedent("""\
+                This Python program is a Terraform plugin. These are not meant to be executed directly.
+                Please execute terraform, which will load any plugins automatically\
+            """),
+            file=sys.stderr,
+        )
+        exit(1)
 
     server = grpc.server(concurrent.futures.ThreadPoolExecutor(max_workers=10))
 
