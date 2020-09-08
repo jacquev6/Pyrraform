@@ -10,6 +10,8 @@ import cryptography.hazmat.primitives.asymmetric.rsa
 
 from . import tfplugin5_0_pb2
 from . import tfplugin5_0_pb2_grpc
+from . import grpc_controller_pb2
+from . import grpc_controller_pb2_grpc
 
 
 logging.basicConfig(
@@ -38,6 +40,7 @@ def main():
 
     server = grpc.server(concurrent.futures.ThreadPoolExecutor(max_workers=10))
 
+    grpc_controller_pb2_grpc.add_GRPCControllerServicer_to_server(GRPCControllerServicer(server), server)
     tfplugin5_0_pb2_grpc.add_ProviderServicer_to_server(ProviderServicer(), server)
 
     # @todo Generate a random name for the Unix socket to avoid collisions
@@ -55,10 +58,7 @@ def main():
     handshake = f"1|5|unix|/tmp/test-1|grpc|{raw_base64_certificate}"
     log.debug(f"Handshake: '{handshake}'")
     print(handshake, flush=True)
-    # @todo Handle shutdown properly
-    # (I assume that Terraform sends some signal(s) to its plugins)
     server.wait_for_termination()
-
     log.info("Exit main")
 
 
@@ -99,6 +99,16 @@ def generate_certificate():
             cryptography.hazmat.primitives.serialization.NoEncryption(),
         ),
     )
+
+
+class GRPCControllerServicer(grpc_controller_pb2_grpc.GRPCControllerServicer):
+    def __init__(self, server):
+        self.__server = server
+
+    def Shutdown(self, request, context):
+        log.info("Shutdown")
+        self.__server.stop(grace=0.5)
+        return grpc_controller_pb2.Empty()
 
 
 class ProviderServicer(tfplugin5_0_pb2_grpc.ProviderServicer):

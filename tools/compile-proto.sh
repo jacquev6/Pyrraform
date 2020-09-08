@@ -12,7 +12,8 @@ docker run \
   python -m grpc_tools.protoc \
     -Itools/compile-proto \
     --python_out=src/Pyrraform --grpc_python_out=src/Pyrraform \
-    tools/compile-proto/tfplugin5_0.proto
+    tools/compile-proto/tfplugin5_0.proto \
+    tools/compile-proto/grpc_controller.proto \
 
 # Use relative imports
 # https://github.com/protocolbuffers/protobuf/issues/1491#issuecomment-673566872
