@@ -9,6 +9,7 @@ import uuid
 
 import grpc
 import cryptography.hazmat.primitives.asymmetric.rsa
+import umsgpack
 
 from . import tfplugin5_0_pb2
 from . import tfplugin5_0_pb2_grpc
@@ -191,8 +192,7 @@ class ProviderServicer(tfplugin5_0_pb2_grpc.ProviderServicer):
         log.info(f"ReadDataSource: {request}")
         return tfplugin5_0_pb2.ReadDataSource.Response(
             state=tfplugin5_0_pb2.DynamicValue(
-                # @todo Use https://pypi.org/project/u-msgpack-python/
-                msgpack=b"\201\243foo\243luv",
+                msgpack=umsgpack.packb({"foo": "love"}),
             ),
             diagnostics=[],
         )
