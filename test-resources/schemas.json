@@ -1,0 +1,276 @@
+{
+    "format_version": "0.1",
+    "provider_schemas": {
+        "pyrraform-test": {
+            "provider": {
+                "version": 0,
+                "block": {
+                    "attributes": {
+                        "left_side": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "data_source_schemas": {
+                "pyrraform-test_verse": {
+                    "version": 0,
+                    "block": {
+                        "attributes": {
+                            "right_side": {
+                                "type": "string"
+                            },
+                            "sentence": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "uptimerobot": {
+            "provider": {
+                "version": 0,
+                "block": {
+                    "attributes": {
+                        "api_key": {
+                            "type": "string",
+                            "required": true
+                        }
+                    }
+                }
+            },
+            "resource_schemas": {
+                "uptimerobot_alert_contact": {
+                    "version": 0,
+                    "block": {
+                        "attributes": {
+                            "friendly_name": {
+                                "type": "string",
+                                "required": true
+                            },
+                            "id": {
+                                "type": "string",
+                                "optional": true,
+                                "computed": true
+                            },
+                            "status": {
+                                "type": "string",
+                                "computed": true
+                            },
+                            "type": {
+                                "type": "string",
+                                "required": true
+                            },
+                            "value": {
+                                "type": "string",
+                                "required": true
+                            }
+                        }
+                    }
+                },
+                "uptimerobot_monitor": {
+                    "version": 0,
+                    "block": {
+                        "attributes": {
+                            "custom_http_headers": {
+                                "type": [
+                                    "map",
+                                    "string"
+                                ],
+                                "optional": true
+                            },
+                            "friendly_name": {
+                                "type": "string",
+                                "required": true
+                            },
+                            "http_password": {
+                                "type": "string",
+                                "optional": true,
+                                "sensitive": true
+                            },
+                            "http_username": {
+                                "type": "string",
+                                "optional": true
+                            },
+                            "id": {
+                                "type": "string",
+                                "optional": true,
+                                "computed": true
+                            },
+                            "interval": {
+                                "type": "number",
+                                "optional": true
+                            },
+                            "keyword_type": {
+                                "type": "string",
+                                "optional": true
+                            },
+                            "keyword_value": {
+                                "type": "string",
+                                "optional": true
+                            },
+                            "port": {
+                                "type": "number",
+                                "optional": true
+                            },
+                            "status": {
+                                "type": "string",
+                                "computed": true
+                            },
+                            "sub_type": {
+                                "type": "string",
+                                "optional": true
+                            },
+                            "type": {
+                                "type": "string",
+                                "required": true
+                            },
+                            "url": {
+                                "type": "string",
+                                "required": true
+                            }
+                        },
+                        "block_types": {
+                            "alert_contact": {
+                                "nesting_mode": "list",
+                                "block": {
+                                    "attributes": {
+                                        "id": {
+                                            "type": "string",
+                                            "required": true
+                                        },
+                                        "recurrence": {
+                                            "type": "number",
+                                            "optional": true
+                                        },
+                                        "threshold": {
+                                            "type": "number",
+                                            "optional": true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "uptimerobot_status_page": {
+                    "version": 0,
+                    "block": {
+                        "attributes": {
+                            "custom_domain": {
+                                "type": "string",
+                                "optional": true
+                            },
+                            "custom_url": {
+                                "type": "string",
+                                "computed": true
+                            },
+                            "dns_address": {
+                                "type": "string",
+                                "computed": true
+                            },
+                            "friendly_name": {
+                                "type": "string",
+                                "required": true
+                            },
+                            "id": {
+                                "type": "string",
+                                "optional": true,
+                                "computed": true
+                            },
+                            "monitors": {
+                                "type": [
+                                    "list",
+                                    "number"
+                                ],
+                                "optional": true
+                            },
+                            "password": {
+                                "type": "string",
+                                "optional": true
+                            },
+                            "sort": {
+                                "type": "string",
+                                "optional": true
+                            },
+                            "standard_url": {
+                                "type": "string",
+                                "computed": true
+                            },
+                            "status": {
+                                "type": "string",
+                                "optional": true
+                            }
+                        }
+                    }
+                }
+            },
+            "data_source_schemas": {
+                "uptimerobot_account": {
+                    "version": 0,
+                    "block": {
+                        "attributes": {
+                            "down_monitors": {
+                                "type": "number",
+                                "computed": true
+                            },
+                            "email": {
+                                "type": "string",
+                                "computed": true
+                            },
+                            "id": {
+                                "type": "string",
+                                "optional": true,
+                                "computed": true
+                            },
+                            "monitor_interval": {
+                                "type": "number",
+                                "computed": true
+                            },
+                            "monitor_limit": {
+                                "type": "number",
+                                "computed": true
+                            },
+                            "paused_monitors": {
+                                "type": "number",
+                                "computed": true
+                            },
+                            "up_monitors": {
+                                "type": "number",
+                                "computed": true
+                            }
+                        }
+                    }
+                },
+                "uptimerobot_alert_contact": {
+                    "version": 0,
+                    "block": {
+                        "attributes": {
+                            "friendly_name": {
+                                "type": "string",
+                                "optional": true
+                            },
+                            "id": {
+                                "type": "string",
+                                "computed": true
+                            },
+                            "status": {
+                                "type": "string",
+                                "computed": true
+                            },
+                            "type": {
+                                "type": "string",
+                                "computed": true
+                            },
+                            "value": {
+                                "type": "string",
+                                "optional": true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

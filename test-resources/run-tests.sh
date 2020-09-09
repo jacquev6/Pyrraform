@@ -23,4 +23,6 @@ function diagnose {
 
 trap diagnose EXIT
 
+terraform providers schema -json | python -m json.tool >schemas.json
+
 TF_LOG=TRACE terraform apply
