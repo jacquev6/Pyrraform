@@ -6,14 +6,16 @@ provider "uptimerobot" {
   api_key = var.uptimerobot_api_key
 }
 
-provider "pyrraform-test" {}
-
-data "pyrraform-test_answer" "answer" {
-    foo = "bar"
+provider "pyrraform-test" {
+    left_side = "love"
 }
 
-output "foo" {
-    value = data.pyrraform-test_answer.answer.foo
+data "pyrraform-test_verse" "first" {
+    right_side = "the answer"
+}
+
+output "first_verse" {
+    value = data.pyrraform-test_verse.first.sentence
 }
 
 data "uptimerobot_account" "account" {}

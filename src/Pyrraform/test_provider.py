@@ -1,3 +1,4 @@
+from typing import Dict, NoReturn, Type
 import os
 import sys
 import logging
@@ -6,6 +7,7 @@ import datetime
 import socket
 import textwrap
 import uuid
+import abc
 
 import grpc
 import cryptography.hazmat.primitives.asymmetric.rsa
@@ -28,7 +30,52 @@ logging.basicConfig(
 log = logging.getLogger(__name__)
 
 
-def main():
+class Schema:
+    # @todo Generate tfplugin5_0_pb2.Schema from structured definition instead of storing it
+    # Type system:
+    # https://github.com/zclconf/go-cty/blob/4e1b2a3ccc87ef459dac0e425f139c117a2d790f/cty/json.go#L16
+
+    _empty_pb_schema = tfplugin5_0_pb2.Schema(
+        block=tfplugin5_0_pb2.Schema.Block(
+            attributes=[],
+            block_types=[],
+        )
+    )
+
+    def __init__(self, pb_schema=_empty_pb_schema):
+        self.pb_schema = pb_schema
+
+
+class DataSource(abc.ABC):
+    config_schema: Schema = Schema()
+
+    @classmethod
+    def validate_config(cls, provider: "Provider", config: Dict) -> bool:
+        return True
+
+    def __init__(self, provider: "Provider", config: Dict):
+        self._provider = provider
+        self._config = config
+
+    @abc.abstractmethod
+    def read(self) -> dict:
+        pass
+
+
+class Provider:
+    config_schema: Schema = Schema()
+
+    data_source_classes: Dict[str, Type[DataSource]] = {}
+
+    @classmethod
+    def prepare_config(self, config: Dict) -> Dict:
+        return config
+
+    def __init__(self, prepared_config: Dict):
+        self._config = prepared_config
+
+
+def run_provider(provider_class: Type[Provider]) -> NoReturn:
     # @todo Understand why terraform starts and stops the plugin several times
     # For example, when running "terraform refresh" on a config with just a single data source:
     # - GetSchema, Shutdown
@@ -62,7 +109,11 @@ def main():
     server = grpc.server(concurrent.futures.ThreadPoolExecutor(max_workers=10))
 
     grpc_controller_pb2_grpc.add_GRPCControllerServicer_to_server(GRPCControllerServicer(server), server)
-    tfplugin5_0_pb2_grpc.add_ProviderServicer_to_server(ProviderServicer(), server)
+
+    program_name = os.path.basename(sys.argv[0])
+    assert program_name.startswith("terraform-provider-"), sys.argv
+    prefix = program_name[19:]
+    tfplugin5_0_pb2_grpc.add_ProviderServicer_to_server(ProviderServicer(prefix, provider_class), server)
 
     # @todo Support Windows by using a TCP socket
     assert sys.platform not in ["win32", "cygwin"]
@@ -77,12 +128,15 @@ def main():
             require_client_auth=True,
         ),
     )
+
     server.start()
     log.info("Server started")
     handshake = f"1|5|{socket_domain}|{socket_name}|grpc|{raw_base64_certificate}"
     log.debug(f"Handshake: '{handshake}'")
     print(handshake, flush=True)
+
     server.wait_for_termination()
+
     log.info("Exit main")
 
 
@@ -137,62 +191,119 @@ class GRPCControllerServicer(grpc_controller_pb2_grpc.GRPCControllerServicer):
 
 
 class ProviderServicer(tfplugin5_0_pb2_grpc.ProviderServicer):
+    def __init__(self, prefix, provider_class):
+        self.__provider_class = provider_class
+        self.__data_source_classes = {
+            f"{prefix}_{name}": data_source_class
+            for (name, data_source_class) in provider_class.data_source_classes.items()
+        }
+        self.__provider = None
+
     def GetSchema(self, request, context):
         log.info("GetSchema")
         return tfplugin5_0_pb2.GetProviderSchema.Response(
-            provider=tfplugin5_0_pb2.Schema(
-                version=1,
-                block=tfplugin5_0_pb2.Schema.Block(
-                    version=1,
-                    attributes=[],
-                    block_types=[],
-                )
-            ),
+            provider=self.__provider_class.config_schema.pb_schema,
             resource_schemas={},
             data_source_schemas={
-                "pyrraform-test_answer": tfplugin5_0_pb2.Schema(
-                    version=1,
-                    block=tfplugin5_0_pb2.Schema.Block(
-                        version=1,
-                        attributes=[
-                            tfplugin5_0_pb2.Schema.Attribute(
-                                name="foo",
-                                # Type system:
-                                # https://github.com/zclconf/go-cty/blob/4e1b2a3ccc87ef459dac0e425f139c117a2d790f/cty/json.go#L16
-                                type=b'"string"',
-                            ),
-                        ],
-                        block_types=[],
-                    )
-                ),
+                full_name: data_source_class.config_schema.pb_schema
+                for (full_name, data_source_class) in self.__data_source_classes.items()
             },
-            diagnostics=[],
         )
 
     def PrepareProviderConfig(self, request, context):
         log.info(f"PrepareProviderConfig: {request}")
-        return tfplugin5_0_pb2.PrepareProviderConfig.Response(
-            prepared_config=request.config,
-            diagnostics=[],
-        )
+        config = umsgpack.unpackb(request.config.msgpack)
 
-    def ValidateDataSourceConfig(self, request, context):
-        log.info(f"ValidateDataSourceConfig: {request}")
-        return tfplugin5_0_pb2.ValidateDataSourceConfig.Response(
-            diagnostics=[],
+        prepared_config = self.__provider_class.prepare_config(config)
+        self.__provider = self.__provider_class(prepared_config)
+
+        return tfplugin5_0_pb2.PrepareProviderConfig.Response(
+            prepared_config=tfplugin5_0_pb2.DynamicValue(
+                msgpack=umsgpack.packb(prepared_config),
+            ),
         )
 
     def Configure(self, request, context):
         log.info(f"Configure: {request}")
-        return tfplugin5_0_pb2.Configure.Response(
-            diagnostics=[],
-        )
+        prepared_config = umsgpack.unpackb(request.config.msgpack)
+
+        self.__provider = self.__provider_class(prepared_config)
+
+        return tfplugin5_0_pb2.Configure.Response()
+
+    def ValidateDataSourceConfig(self, request, context):
+        log.info(f"ValidateDataSourceConfig: {request}")
+        assert self.__provider is not None
+        data_source_class = self.__data_source_classes[request.type_name]
+        config = umsgpack.unpackb(request.config.msgpack)
+
+        assert data_source_class.validate_config(self.__provider, config)
+
+        return tfplugin5_0_pb2.ValidateDataSourceConfig.Response()
 
     def ReadDataSource(self, request, context):
         log.info(f"ReadDataSource: {request}")
+        assert self.__provider is not None
+        data_source_class = self.__data_source_classes[request.type_name]
+        config = umsgpack.unpackb(request.config.msgpack)
+
+        data_source = data_source_class(self.__provider, config)
+        data = data_source.read()
+
         return tfplugin5_0_pb2.ReadDataSource.Response(
             state=tfplugin5_0_pb2.DynamicValue(
-                msgpack=umsgpack.packb({"foo": "love"}),
+                msgpack=umsgpack.packb(data),
             ),
-            diagnostics=[],
         )
+
+
+def main():
+    run_provider(TestProvider)
+
+
+class VerseDataSource(DataSource):
+    config_schema = Schema(tfplugin5_0_pb2.Schema(
+        block=tfplugin5_0_pb2.Schema.Block(
+            attributes=[
+                # @todo Split config schema and output schema?
+                tfplugin5_0_pb2.Schema.Attribute(
+                    name="right_side",
+                    type=b'"string"',
+                ),
+                tfplugin5_0_pb2.Schema.Attribute(
+                    name="sentence",
+                    type=b'"string"',
+                    # @todo Understand the difference between `required` and `optional` fields
+                    # Hypothesis: `required` means the attribute must appear in the config file
+                    # and `optional` allows the attribute to be absent from self.read's return value
+                    # @todo Understand the `computed` field
+                ),
+            ],
+            block_types=[],
+        )
+    ))
+
+    def read(self):
+        sentence = f"{self._provider._config['left_side']} is {self._config['right_side']}"
+        return {
+            "right_side": self._config["right_side"],
+            "sentence": sentence,
+        }
+
+
+class TestProvider(Provider):
+    config_schema = Schema(tfplugin5_0_pb2.Schema(
+        block=tfplugin5_0_pb2.Schema.Block(
+            attributes=[
+                tfplugin5_0_pb2.Schema.Attribute(
+                    name="left_side",
+                    type=b'"string"',
+                ),
+            ],
+            block_types=[],
+        )
+    ))
+
+    data_source_classes = {
+        "verse": VerseDataSource,
+    }
