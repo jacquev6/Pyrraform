@@ -1,1 +1,2 @@
-from .test_provider import run_provider, Provider, DataSource, Schema
+from .provider import Provider, DataSource, Schema
+from .plugin import run_provider

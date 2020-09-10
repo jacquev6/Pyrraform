@@ -1,4 +1,4 @@
-from typing import Dict, NoReturn, Type
+from typing import NoReturn, Type
 import os
 import sys
 import logging
@@ -7,79 +7,20 @@ import datetime
 import socket
 import textwrap
 import uuid
-import abc
 
 import grpc
 import cryptography.hazmat.primitives.asymmetric.rsa
 import umsgpack
 
+from .provider import Provider
 from . import tfplugin5_0_pb2
 from . import tfplugin5_0_pb2_grpc
 from . import grpc_controller_pb2
 from . import grpc_controller_pb2_grpc
 
 
-logging.basicConfig(
-    filename="/terraform-provider-pyrraform-test.log",
-    level=logging.INFO,
-    format="{asctime}.{msecs:03.0f}:{levelname}:{name}:{message}",
-    style="{",
-    datefmt="%Y%m%d-%H%M%S",
-)
-
 log = logging.getLogger(__name__)
 
-
-class Schema:
-    # @todo Generate tfplugin5_0_pb2.Schema from structured definition instead of storing it
-    # Type system:
-    # https://github.com/zclconf/go-cty/blob/4e1b2a3ccc87ef459dac0e425f139c117a2d790f/cty/json.go#L16
-
-    # @todo Understand the difference between `required` and `optional` fields
-    # Hypothesis: `required` means the attribute must appear in the config file
-    # and `optional` allows the attribute to be absent from self.read's return value
-
-    # @todo Understand the `computed` field
-
-    _empty_pb_schema = tfplugin5_0_pb2.Schema(
-        block=tfplugin5_0_pb2.Schema.Block(
-            attributes=[],
-            block_types=[],
-        )
-    )
-
-    def __init__(self, pb_schema=_empty_pb_schema):
-        self.pb_schema = pb_schema
-
-
-class DataSource(abc.ABC):
-    config_schema: Schema = Schema()
-    # @todo Split config schema and output schema?
-
-    @classmethod
-    def validate_config(cls, provider: "Provider", config: Dict) -> bool:
-        return True
-
-    def __init__(self, provider: "Provider", config: Dict):
-        self._provider = provider
-        self._config = config
-
-    @abc.abstractmethod
-    def read(self) -> dict:
-        pass
-
-
-class Provider:
-    config_schema: Schema = Schema()
-
-    data_source_classes: Dict[str, Type[DataSource]] = {}
-
-    @classmethod
-    def prepare_config(self, config: Dict) -> Dict:
-        return config
-
-    def __init__(self, prepared_config: Dict):
-        self._config = prepared_config
 
 
 def run_provider(provider_class: Type[Provider]) -> NoReturn:
@@ -93,6 +34,15 @@ def run_provider(provider_class: Type[Provider]) -> NoReturn:
     # I would assume starting the plugin once and calling GetSchema, PrepareProviderConfig,
     # Configure, ValidateDataSourceConfig, ReadDataSource, Shutdown would be enough.
     # Note that the PLUGIN_CLIENT_CERT changes.
+
+    logging.basicConfig(
+        filename="/terraform-provider-pyrraform-test.log",
+        level=logging.INFO,
+        format="{asctime}.{msecs:03.0f}:{levelname}:{name}:{message}",
+        style="{",
+        datefmt="%Y%m%d-%H%M%S",
+    )
+
     log.info(f"Enter main with command-line {sys.argv}")
     for k, v in os.environ.items():
         log.debug(f"Environment variable: {k}={v}")

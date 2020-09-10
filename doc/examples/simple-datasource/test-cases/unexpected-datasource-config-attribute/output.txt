@@ -46,11 +46,11 @@ terraform providers schema -json | python -m json.tool
     }
 }
 sed "s/^........-......\....://" /terraform-provider-pyrraform-test.log
-INFO:Pyrraform.test_provider:Enter main with command-line ['/usr/local/bin/terraform-provider-simple-datasource']
-INFO:Pyrraform.test_provider:Server started
-INFO:Pyrraform.test_provider:GetSchema
-INFO:Pyrraform.test_provider:Shutdown
-INFO:Pyrraform.test_provider:Exit main
+INFO:Pyrraform.plugin:Enter main with command-line ['/usr/local/bin/terraform-provider-simple-datasource']
+INFO:Pyrraform.plugin:Server started
+INFO:Pyrraform.plugin:GetSchema
+INFO:Pyrraform.plugin:Shutdown
+INFO:Pyrraform.plugin:Exit main
 rm /terraform-provider-pyrraform-test.log
 test ! -f terraform.tfstate
 
