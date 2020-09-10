@@ -1,0 +1,36 @@
+#!/usr/bin/env python3
+
+import Pyrraform
+from Pyrraform import tfplugin5_0_pb2
+
+
+class VerseDataSource(Pyrraform.DataSource):
+    config_schema = Pyrraform.Schema(tfplugin5_0_pb2.Schema(
+        block=tfplugin5_0_pb2.Schema.Block(attributes=[
+            tfplugin5_0_pb2.Schema.Attribute(name="right_side", type=b'"string"'),
+            tfplugin5_0_pb2.Schema.Attribute(name="sentence", type=b'"string"'),
+        ])
+    ))
+
+    def read(self):
+        sentence = f"{self._provider._config['left_side']} is {self._config['right_side']}"
+        return {
+            "right_side": self._config["right_side"],
+            "sentence": sentence,
+        }
+
+
+class ConfiguredProvider(Pyrraform.Provider):
+    config_schema = Pyrraform.Schema(tfplugin5_0_pb2.Schema(
+        block=tfplugin5_0_pb2.Schema.Block(attributes=[
+            tfplugin5_0_pb2.Schema.Attribute(name="left_side", type=b'"string"'),
+        ])
+    ))
+
+    data_source_classes = {
+        "verse": VerseDataSource,
+    }
+
+
+if __name__ == "__main__":
+    Pyrraform.run_provider(ConfiguredProvider)

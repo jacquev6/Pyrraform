@@ -35,6 +35,12 @@ class Schema:
     # Type system:
     # https://github.com/zclconf/go-cty/blob/4e1b2a3ccc87ef459dac0e425f139c117a2d790f/cty/json.go#L16
 
+    # @todo Understand the difference between `required` and `optional` fields
+    # Hypothesis: `required` means the attribute must appear in the config file
+    # and `optional` allows the attribute to be absent from self.read's return value
+
+    # @todo Understand the `computed` field
+
     _empty_pb_schema = tfplugin5_0_pb2.Schema(
         block=tfplugin5_0_pb2.Schema.Block(
             attributes=[],
@@ -48,6 +54,7 @@ class Schema:
 
 class DataSource(abc.ABC):
     config_schema: Schema = Schema()
+    # @todo Split config schema and output schema?
 
     @classmethod
     def validate_config(cls, provider: "Provider", config: Dict) -> bool:
@@ -255,55 +262,3 @@ class ProviderServicer(tfplugin5_0_pb2_grpc.ProviderServicer):
                 msgpack=umsgpack.packb(data),
             ),
         )
-
-
-def main():
-    run_provider(TestProvider)
-
-
-class VerseDataSource(DataSource):
-    config_schema = Schema(tfplugin5_0_pb2.Schema(
-        block=tfplugin5_0_pb2.Schema.Block(
-            attributes=[
-                # @todo Split config schema and output schema?
-                tfplugin5_0_pb2.Schema.Attribute(
-                    name="right_side",
-                    type=b'"string"',
-                ),
-                tfplugin5_0_pb2.Schema.Attribute(
-                    name="sentence",
-                    type=b'"string"',
-                    # @todo Understand the difference between `required` and `optional` fields
-                    # Hypothesis: `required` means the attribute must appear in the config file
-                    # and `optional` allows the attribute to be absent from self.read's return value
-                    # @todo Understand the `computed` field
-                ),
-            ],
-            block_types=[],
-        )
-    ))
-
-    def read(self):
-        sentence = f"{self._provider._config['left_side']} is {self._config['right_side']}"
-        return {
-            "right_side": self._config["right_side"],
-            "sentence": sentence,
-        }
-
-
-class TestProvider(Provider):
-    config_schema = Schema(tfplugin5_0_pb2.Schema(
-        block=tfplugin5_0_pb2.Schema.Block(
-            attributes=[
-                tfplugin5_0_pb2.Schema.Attribute(
-                    name="left_side",
-                    type=b'"string"',
-                ),
-            ],
-            block_types=[],
-        )
-    ))
-
-    data_source_classes = {
-        "verse": VerseDataSource,
-    }
