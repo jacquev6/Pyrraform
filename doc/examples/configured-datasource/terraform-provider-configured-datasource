@@ -4,31 +4,63 @@ import Pyrraform
 from Pyrraform import tfplugin5_0_pb2
 
 
-class VerseDataSource(Pyrraform.DataSource):
+class DumpConfigsDataSource(Pyrraform.DataSource):
     config_schema = Pyrraform.Schema(tfplugin5_0_pb2.Schema(
-        block=tfplugin5_0_pb2.Schema.Block(attributes=[
-            tfplugin5_0_pb2.Schema.Attribute(name="right_side", type=b'"string"'),
-            tfplugin5_0_pb2.Schema.Attribute(name="sentence", type=b'"string"'),
-        ])
+        block=tfplugin5_0_pb2.Schema.Block(
+            attributes=[
+                tfplugin5_0_pb2.Schema.Attribute(name="datasource_attribute_number", type=b'"number"'),
+                tfplugin5_0_pb2.Schema.Attribute(name="datasource_attribute_string", type=b'"string"'),
+                tfplugin5_0_pb2.Schema.Attribute(name="datasource_attribute_boolean", type=b'"bool"'),
+                tfplugin5_0_pb2.Schema.Attribute(name="datasource_attribute_number_list", type=b'["list","number"]'),
+                tfplugin5_0_pb2.Schema.Attribute(name="datasource_attribute_string_list_list", type=b'["list",["list","string"]]'),
+                tfplugin5_0_pb2.Schema.Attribute(name="datasource_attribute_object", type=b'["object",{"a":"number"}]'),
+
+                tfplugin5_0_pb2.Schema.Attribute(name="datasource_attribute_string_required", type=b'"string"', required=True),
+
+                tfplugin5_0_pb2.Schema.Attribute(name="provider", type=b'"string"', computed=True),
+                tfplugin5_0_pb2.Schema.Attribute(name="datasource", type=b'"string"', computed=True),
+            ],
+            block_types=[
+                tfplugin5_0_pb2.Schema.NestedBlock(
+                    type_name="datasource_block_single_optional",
+                    block=tfplugin5_0_pb2.Schema.Block(attributes=[
+                        tfplugin5_0_pb2.Schema.Attribute(name="block_attribute", type=b'"string"'),
+                    ]),
+                    nesting=tfplugin5_0_pb2.Schema.NestedBlock.SINGLE,
+                ),
+                tfplugin5_0_pb2.Schema.NestedBlock(
+                    type_name="datasource_block_single_required",
+                    block=tfplugin5_0_pb2.Schema.Block(attributes=[
+                        tfplugin5_0_pb2.Schema.Attribute(name="block_attribute", type=b'"string"'),
+                    ]),
+                    nesting=tfplugin5_0_pb2.Schema.NestedBlock.SINGLE,
+                    min_items=1,  # Any other value is interpreted as 0, i.e. optional block
+                    # max_items is ignored
+                ),
+            ],
+        )
     ))
 
     def read(self):
-        sentence = f"{self._provider._config['left_side']} is {self._config['right_side']}"
-        return {
-            "right_side": self._config["right_side"],
-            "sentence": sentence,
-        }
+        ret = dict(self._config)
+        ret.update({
+            "provider": str(self._provider._config),
+            "datasource": str(self._config),
+        })
+        return ret
 
 
 class ConfiguredProvider(Pyrraform.Provider):
     config_schema = Pyrraform.Schema(tfplugin5_0_pb2.Schema(
         block=tfplugin5_0_pb2.Schema.Block(attributes=[
-            tfplugin5_0_pb2.Schema.Attribute(name="left_side", type=b'"string"'),
+            tfplugin5_0_pb2.Schema.Attribute(name="provider_attribute_number", type=b'"number"', optional=True),
+            tfplugin5_0_pb2.Schema.Attribute(name="provider_attribute_string", type=b'"string"', optional=True),
+            tfplugin5_0_pb2.Schema.Attribute(name="provider_attribute_boolean", type=b'"bool"', optional=True),
         ])
     ))
 
     data_source_classes = {
-        "verse": VerseDataSource,
+        "dump-configs": DumpConfigsDataSource,
     }
 
 
