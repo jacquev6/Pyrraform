@@ -38,6 +38,8 @@ class DumpConfigsDataSource(Pyrraform.DataSource):
                     # max_items is ignored
                 ),
 
+                # @todo Explore tfplugin5_0_pb2.Schema.NestedBlock.GROUP
+
                 tfplugin5_0_pb2.Schema.NestedBlock(
                     type_name="datasource_block_list",
                     block=tfplugin5_0_pb2.Schema.Block(attributes=[
