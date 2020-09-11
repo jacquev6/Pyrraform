@@ -4,16 +4,16 @@ set -o errexit
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 
-root="."
+providers=()
 no_cache=""
-while [[ "$#" > 0 ]]
+while [[ "$#" -gt 0 ]]
 do
   case $1 in
     --no-cache)
       no_cache="--no-cache --pull"
       ;;
-    --root)
-      root=./$2
+    --provider)
+      providers+=( $2 )
       shift
       ;;
     *)
@@ -23,29 +23,64 @@ do
   shift
 done
 
+if [ ${#providers[@]} -eq 0 ]
+then
+  for d in $(find * -type d -depth 0)
+  do
+    providers+=( $d )
+  done
+fi
 
 docker_image=$(docker build --quiet $no_cache --file Dockerfile ../..)
 
+shopt -s nullglob
+for provider in ${providers[@]}; do
+  echo $provider
+  echo $provider | sed s/./=/g
+  echo "Successes:"
+  for success in $provider/successes/*
+  do
+    success=${success#$provider/successes/}
+    echo $success
 
-for main_config_file_path in $(find $root -name main.tf)
-do
-  config_directory_path=$PWD/${main_config_file_path%/main.tf}
-  echo $config_directory_path
-  provider_name=$(echo $main_config_file_path | cut -d / -f 2)
-  provider_path=$PWD/$provider_name/terraform-provider-$provider_name
+    rm -rf /tmp/pyrraform-test-resources
+    cp -r $provider/successes/$success /tmp/pyrraform-test-resources
+    if ! docker run \
+      --rm \
+      --volume $PWD/$provider/terraform-provider-$provider:/usr/local/bin/terraform-provider-$provider:ro \
+      --volume $PWD/run-test.sh:/run-test.sh:ro \
+      --volume /tmp/pyrraform-test-resources:/resources \
+      --workdir /resources \
+      $docker_image \
+      /run-test.sh \
+    >$provider/successes/$success/output.txt 2>&1
+    then
+      echo "Error on an expected success"
+      false
+    fi
+  done
+  echo "Errors:"
+  for error in $provider/errors/*
+  do
+    error=${error#$provider/errors/}
+    echo $error
 
-  rm -rf /tmp/pyrraform-test-resources
-  cp -r $config_directory_path /tmp/pyrraform-test-resources
-
-  docker run \
-    --rm \
-    --volume $provider_path:/usr/local/bin/terraform-provider-$provider_name:ro \
-    --volume $PWD/run-test.sh:/run-test.sh:ro \
-    --volume /tmp/pyrraform-test-resources:/resources \
-    --workdir /resources \
-    $docker_image \
-    /run-test.sh \
-  >$config_directory_path/output.txt 2>&1 || true
-
+    rm -rf /tmp/pyrraform-test-resources
+    cp -r $provider/errors/$error /tmp/pyrraform-test-resources
+    if docker run \
+      --rm \
+      --volume $PWD/$provider/terraform-provider-$provider:/usr/local/bin/terraform-provider-$provider:ro \
+      --volume $PWD/run-test.sh:/run-test.sh:ro \
+      --volume /tmp/pyrraform-test-resources:/resources \
+      --workdir /resources \
+      $docker_image \
+      /run-test.sh \
+    >$provider/errors/$error/output.txt 2>&1
+    then
+      echo "Success on an expected error"
+      false
+    fi
+  done
   echo
 done
+shopt -u nullglob
