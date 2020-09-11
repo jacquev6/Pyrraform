@@ -25,6 +25,37 @@ data "configured-datasource_dump-configs" "configs" {
     datasource_block_single_required {
         block_attribute = "required"
     }
+
+    datasource_block_list {
+        block_attribute = "list 1"
+    }
+    datasource_block_list {
+        block_attribute = "list 2"
+    }
+    # Block repeated on purpose to explore the difference between list and set
+    datasource_block_list {
+        block_attribute = "list 2"
+    }
+
+    datasource_block_set {
+        block_attribute = "set 1"
+    }
+    datasource_block_set {
+        block_attribute = "set 2"
+    }
+    # Block repeated on purpose to explore the difference between list and set
+    datasource_block_set {
+        block_attribute = "set 2"
+    }
+
+    # Labels can be quoted
+    datasource_block_map "a" {
+        block_attribute = "map 1"
+    }
+    # Labels can be unquoted
+    datasource_block_map b {
+        block_attribute = "map 2"
+    }
 }
 
 output "provider_config" {

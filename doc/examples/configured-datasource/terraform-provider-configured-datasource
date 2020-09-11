@@ -37,6 +37,30 @@ class DumpConfigsDataSource(Pyrraform.DataSource):
                     min_items=1,  # Any other value is interpreted as 0, i.e. optional block
                     # max_items is ignored
                 ),
+
+                tfplugin5_0_pb2.Schema.NestedBlock(
+                    type_name="datasource_block_list",
+                    block=tfplugin5_0_pb2.Schema.Block(attributes=[
+                        tfplugin5_0_pb2.Schema.Attribute(name="block_attribute", type=b'"string"'),
+                    ]),
+                    nesting=tfplugin5_0_pb2.Schema.NestedBlock.LIST,
+                ),
+
+                tfplugin5_0_pb2.Schema.NestedBlock(
+                    type_name="datasource_block_set",
+                    block=tfplugin5_0_pb2.Schema.Block(attributes=[
+                        tfplugin5_0_pb2.Schema.Attribute(name="block_attribute", type=b'"string"'),
+                    ]),
+                    nesting=tfplugin5_0_pb2.Schema.NestedBlock.SET,
+                ),
+
+                tfplugin5_0_pb2.Schema.NestedBlock(
+                    type_name="datasource_block_map",
+                    block=tfplugin5_0_pb2.Schema.Block(attributes=[
+                        tfplugin5_0_pb2.Schema.Attribute(name="block_attribute", type=b'"string"'),
+                    ]),
+                    nesting=tfplugin5_0_pb2.Schema.NestedBlock.MAP,
+                ),
             ],
         )
     ))

@@ -1,0 +1,175 @@
+
+terraform providers
+.
+└── provider.configured-datasource
+
+
+terraform init
+
+[0m[1mInitializing the backend...[0m
+
+[0m[1mInitializing provider plugins...[0m
+
+[0m[1m[32mTerraform has been successfully initialized![0m[32m[0m
+[0m[32m
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.[0m
+test ! -f /terraform-provider-pyrraform-test.log
+
+terraform providers schema -json | python -m json.tool
+{
+    "format_version": "0.1",
+    "provider_schemas": {
+        "configured-datasource": {
+            "provider": {
+                "version": 0,
+                "block": {
+                    "attributes": {
+                        "provider_attribute_boolean": {
+                            "type": "bool",
+                            "optional": true
+                        },
+                        "provider_attribute_number": {
+                            "type": "number",
+                            "optional": true
+                        },
+                        "provider_attribute_string": {
+                            "type": "string",
+                            "optional": true
+                        }
+                    }
+                }
+            },
+            "data_source_schemas": {
+                "configured-datasource_dump-configs": {
+                    "version": 0,
+                    "block": {
+                        "attributes": {
+                            "datasource": {
+                                "type": "string",
+                                "computed": true
+                            },
+                            "datasource_attribute_boolean": {
+                                "type": "bool"
+                            },
+                            "datasource_attribute_number": {
+                                "type": "number"
+                            },
+                            "datasource_attribute_number_list": {
+                                "type": [
+                                    "list",
+                                    "number"
+                                ]
+                            },
+                            "datasource_attribute_object": {
+                                "type": [
+                                    "object",
+                                    {
+                                        "a": "number"
+                                    }
+                                ]
+                            },
+                            "datasource_attribute_string": {
+                                "type": "string"
+                            },
+                            "datasource_attribute_string_list_list": {
+                                "type": [
+                                    "list",
+                                    [
+                                        "list",
+                                        "string"
+                                    ]
+                                ]
+                            },
+                            "datasource_attribute_string_required": {
+                                "type": "string",
+                                "required": true
+                            },
+                            "provider": {
+                                "type": "string",
+                                "computed": true
+                            }
+                        },
+                        "block_types": {
+                            "datasource_block_list": {
+                                "nesting_mode": "list",
+                                "block": {
+                                    "attributes": {
+                                        "block_attribute": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "datasource_block_map": {
+                                "nesting_mode": "map",
+                                "block": {
+                                    "attributes": {
+                                        "block_attribute": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "datasource_block_set": {
+                                "nesting_mode": "set",
+                                "block": {
+                                    "attributes": {
+                                        "block_attribute": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "datasource_block_single_optional": {
+                                "nesting_mode": "single",
+                                "block": {
+                                    "attributes": {
+                                        "block_attribute": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "datasource_block_single_required": {
+                                "nesting_mode": "single",
+                                "block": {
+                                    "attributes": {
+                                        "block_attribute": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "min_items": 1
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+sed "s/^........-......\....://" /terraform-provider-pyrraform-test.log
+INFO:Pyrraform.plugin:Enter main with command-line ['/usr/local/bin/terraform-provider-configured-datasource']
+INFO:Pyrraform.plugin:Server started
+INFO:Pyrraform.plugin:GetSchema
+INFO:Pyrraform.plugin:Shutdown
+INFO:Pyrraform.plugin:Exit main
+rm /terraform-provider-pyrraform-test.log
+test ! -f terraform.tfstate
+
+terraform plan
+[31m
+[1m[31mError: [0m[0m[1mDuplicate datasource_block_map block[0m
+
+[0m  on main.tf line 13, in data "configured-datasource_dump-configs" "configs":
+  13:     [4mdatasource_block_map a[0m {
+[0m
+A block for datasource_block_map "a" was already defined. The
+datasource_block_map labels must be unique.
+[0m[0m

@@ -21,6 +21,11 @@ class Schema:
 
     # @todo Double-check that "One of [optional or required] must be set if the value is not
     # computed. That is: value either comes from the config, is computed, or is both."
+
+    # Reference code for schemas:
+    # - Meaning of tfplugin5_0_pb2.Schema.NestedBlock.NestingMode:
+    #   https://github.com/hashicorp/terraform-plugin-sdk/blob/v2.0.0/internal/configs/configschema/schema.go#L113-L155
+
     _empty_pb_schema = tfplugin5_0_pb2.Schema(
         block=tfplugin5_0_pb2.Schema.Block(
             attributes=[],
