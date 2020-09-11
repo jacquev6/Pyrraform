@@ -5,67 +5,209 @@ from Pyrraform import tfplugin5_0_pb2
 
 
 class DumpConfigsDataSource(Pyrraform.DataSource):
-    config_schema = Pyrraform.Schema(tfplugin5_0_pb2.Schema(
-        block=tfplugin5_0_pb2.Schema.Block(
+    config_schema = Pyrraform.Schema(
+        version=0,
+        block=Pyrraform.schema.Block(
+            version=0,
             attributes=[
-                tfplugin5_0_pb2.Schema.Attribute(name="datasource_attribute_number", type=b'"number"'),
-                tfplugin5_0_pb2.Schema.Attribute(name="datasource_attribute_string", type=b'"string"'),
-                tfplugin5_0_pb2.Schema.Attribute(name="datasource_attribute_boolean", type=b'"bool"'),
-                tfplugin5_0_pb2.Schema.Attribute(name="datasource_attribute_number_list", type=b'["list","number"]'),
-                tfplugin5_0_pb2.Schema.Attribute(name="datasource_attribute_string_list_list", type=b'["list",["list","string"]]'),
-                tfplugin5_0_pb2.Schema.Attribute(name="datasource_attribute_object", type=b'["object",{"a":"number"}]'),
+                Pyrraform.schema.Attribute(
+                    name="datasource_attribute_number",
+                    type=Pyrraform.Number,
+                    description="",
+                    required=False,
+                    optional=False,
+                    computed=False,
+                    sensitive=False,
+                ),
+                Pyrraform.schema.Attribute(
+                    name="datasource_attribute_string",
+                    type=Pyrraform.String,
+                    description="",
+                    required=False,
+                    optional=False,
+                    computed=False,
+                    sensitive=False,
+                ),
+                Pyrraform.schema.Attribute(
+                    name="datasource_attribute_boolean",
+                    type=Pyrraform.Boolean,
+                    description="",
+                    required=False,
+                    optional=False,
+                    computed=False,
+                    sensitive=False,
+                ),
+                Pyrraform.schema.Attribute(
+                    name="datasource_attribute_number_list",
+                    type=Pyrraform.List(Pyrraform.Number),
+                    description="",
+                    required=False,
+                    optional=False,
+                    computed=False,
+                    sensitive=False,
+                ),
+                Pyrraform.schema.Attribute(
+                    name="datasource_attribute_string_list_list",
+                    type=Pyrraform.List(Pyrraform.List(Pyrraform.String)),
+                    description="",
+                    required=False,
+                    optional=False,
+                    computed=False,
+                    sensitive=False,
+                ),
+                Pyrraform.schema.Attribute(
+                    name="datasource_attribute_object",
+                    type=Pyrraform.Object(a=Pyrraform.Number),
+                    description="",
+                    required=False,
+                    optional=False,
+                    computed=False,
+                    sensitive=False,
+                ),
 
-                tfplugin5_0_pb2.Schema.Attribute(name="datasource_attribute_string_required", type=b'"string"', required=True),
+                Pyrraform.schema.Attribute(
+                    name="datasource_attribute_string_required",
+                    type=Pyrraform.String,
+                    required=True,
+                    description="",
+                    optional=False,
+                    computed=False,
+                    sensitive=False,
+                ),
 
-                tfplugin5_0_pb2.Schema.Attribute(name="provider", type=b'"string"', computed=True),
-                tfplugin5_0_pb2.Schema.Attribute(name="datasource", type=b'"string"', computed=True),
+                Pyrraform.schema.Attribute(
+                    name="provider",
+                    type=Pyrraform.String,
+                    computed=True,
+                    description="",
+                    required=False,
+                    optional=False,
+                    sensitive=False,
+                ),
+                Pyrraform.schema.Attribute(
+                    name="datasource",
+                    type=Pyrraform.String,
+                    computed=True,
+                    description="",
+                    required=False,
+                    optional=False,
+                    sensitive=False,
+                ),
             ],
             block_types=[
-                tfplugin5_0_pb2.Schema.NestedBlock(
+                Pyrraform.schema.NestedBlock(
                     type_name="datasource_block_single_optional",
-                    block=tfplugin5_0_pb2.Schema.Block(attributes=[
-                        tfplugin5_0_pb2.Schema.Attribute(name="block_attribute", type=b'"string"'),
-                    ]),
-                    nesting=tfplugin5_0_pb2.Schema.NestedBlock.SINGLE,
+                    block=Pyrraform.schema.Block(
+                        version=0,
+                        attributes=[
+                            Pyrraform.schema.Attribute(
+                                name="block_attribute",
+                                type=Pyrraform.String,
+                                description="",
+                                required=False,
+                                optional=False,
+                                computed=False,
+                                sensitive=False,
+                            ),
+                        ],
+                        block_types=[],
+                    ),
+                    nesting=Pyrraform.schema.NestingMode.SINGLE,
+                    min_items=0,
+                    max_items=0,
                 ),
-                tfplugin5_0_pb2.Schema.NestedBlock(
+                Pyrraform.schema.NestedBlock(
                     type_name="datasource_block_single_required",
-                    block=tfplugin5_0_pb2.Schema.Block(attributes=[
-                        tfplugin5_0_pb2.Schema.Attribute(name="block_attribute", type=b'"string"'),
-                    ]),
-                    nesting=tfplugin5_0_pb2.Schema.NestedBlock.SINGLE,
+                    block=Pyrraform.schema.Block(
+                        version=0,
+                        attributes=[
+                            Pyrraform.schema.Attribute(
+                                name="block_attribute",
+                                type=Pyrraform.String,
+                                description="",
+                                required=False,
+                                optional=False,
+                                computed=False,
+                                sensitive=False,
+                            ),
+                        ],
+                        block_types=[],
+                    ),
+                    nesting=Pyrraform.schema.NestingMode.SINGLE,
                     min_items=1,  # Any other value is interpreted as 0, i.e. optional block
-                    # max_items is ignored
+                    max_items=0,  # ignored
                 ),
 
-                # @todo Explore tfplugin5_0_pb2.Schema.NestedBlock.GROUP
+                # @todo Explore Pyrraform.schema.NestingMode.GROUP
 
-                tfplugin5_0_pb2.Schema.NestedBlock(
+                Pyrraform.schema.NestedBlock(
                     type_name="datasource_block_list",
-                    block=tfplugin5_0_pb2.Schema.Block(attributes=[
-                        tfplugin5_0_pb2.Schema.Attribute(name="block_attribute", type=b'"string"'),
-                    ]),
-                    nesting=tfplugin5_0_pb2.Schema.NestedBlock.LIST,
+                    block=Pyrraform.schema.Block(
+                        version=0,
+                        attributes=[
+                            Pyrraform.schema.Attribute(
+                                name="block_attribute",
+                                type=Pyrraform.String,
+                                description="",
+                                required=False,
+                                optional=False,
+                                computed=False,
+                                sensitive=False,
+                            ),
+                        ],
+                        block_types=[],
+                    ),
+                    nesting=Pyrraform.schema.NestingMode.LIST,
+                    min_items=0,
+                    max_items=0,
                 ),
 
-                tfplugin5_0_pb2.Schema.NestedBlock(
+                Pyrraform.schema.NestedBlock(
                     type_name="datasource_block_set",
-                    block=tfplugin5_0_pb2.Schema.Block(attributes=[
-                        tfplugin5_0_pb2.Schema.Attribute(name="block_attribute", type=b'"string"'),
-                    ]),
-                    nesting=tfplugin5_0_pb2.Schema.NestedBlock.SET,
+                    block=Pyrraform.schema.Block(
+                        version=0,
+                        attributes=[
+                            Pyrraform.schema.Attribute(
+                                name="block_attribute",
+                                type=Pyrraform.String,
+                                description="",
+                                required=False,
+                                optional=False,
+                                computed=False,
+                                sensitive=False,
+                            ),
+                        ],
+                        block_types=[],
+                    ),
+                    nesting=Pyrraform.schema.NestingMode.SET,
+                    min_items=0,
+                    max_items=0,
                 ),
 
-                tfplugin5_0_pb2.Schema.NestedBlock(
+                Pyrraform.schema.NestedBlock(
                     type_name="datasource_block_map",
-                    block=tfplugin5_0_pb2.Schema.Block(attributes=[
-                        tfplugin5_0_pb2.Schema.Attribute(name="block_attribute", type=b'"string"'),
-                    ]),
-                    nesting=tfplugin5_0_pb2.Schema.NestedBlock.MAP,
+                    block=Pyrraform.schema.Block(
+                        version=0,
+                        attributes=[
+                            Pyrraform.schema.Attribute(
+                                name="block_attribute",
+                                type=Pyrraform.String,
+                                description="",
+                                required=False,
+                                optional=False,
+                                computed=False,
+                                sensitive=False,
+                            ),
+                        ],
+                        block_types=[],
+                    ),
+                    nesting=Pyrraform.schema.NestingMode.MAP,
+                    min_items=0,
+                    max_items=0,
                 ),
             ],
         )
-    ))
+    )
 
     def read(self):
         ret = dict(self._config)
@@ -78,13 +220,42 @@ class DumpConfigsDataSource(Pyrraform.DataSource):
 
 
 class ConfiguredProvider(Pyrraform.Provider):
-    config_schema = Pyrraform.Schema(tfplugin5_0_pb2.Schema(
-        block=tfplugin5_0_pb2.Schema.Block(attributes=[
-            tfplugin5_0_pb2.Schema.Attribute(name="provider_attribute_number", type=b'"number"', optional=True),
-            tfplugin5_0_pb2.Schema.Attribute(name="provider_attribute_string", type=b'"string"', optional=True),
-            tfplugin5_0_pb2.Schema.Attribute(name="provider_attribute_boolean", type=b'"bool"', optional=True),
-        ])
-    ))
+    config_schema = Pyrraform.Schema(
+        version=0,
+        block=Pyrraform.schema.Block(
+            version=0,
+            attributes=[
+                Pyrraform.schema.Attribute(
+                    name="provider_attribute_number",
+                    type=Pyrraform.Number,
+                    description="",
+                    required=False,
+                    optional=True,
+                    computed=False,
+                    sensitive=False,
+                ),
+                Pyrraform.schema.Attribute(
+                    name="provider_attribute_string",
+                    type=Pyrraform.String,
+                    description="",
+                    required=False,
+                    optional=True,
+                    computed=False,
+                    sensitive=False,
+                ),
+                Pyrraform.schema.Attribute(
+                    name="provider_attribute_boolean",
+                    type=Pyrraform.Boolean,
+                    description="",
+                    required=False,
+                    optional=True,
+                    computed=False,
+                    sensitive=False,
+                ),
+            ],
+            block_types=[],
+        )
+    )
 
     data_source_classes = {
         "dump-configs": DumpConfigsDataSource,

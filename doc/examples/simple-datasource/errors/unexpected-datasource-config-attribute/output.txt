@@ -1,8 +1,19 @@
 
+
+/usr/local/bin/terraform-provider-* || true
+This Python program is a Terraform plugin. These are not meant to be executed directly.
+Please execute terraform, which will load any plugins automatically.
+sed "s/^........-......\....://" /terraform-provider-pyrraform-test.log
+INFO:Pyrraform.plugin:Enter main with command-line ['/usr/local/bin/terraform-provider-simple-datasource', '/usr/local/bin/terraform-provider-uptimerobot']
+rm /terraform-provider-pyrraform-test.log
+test ! -f terraform.tfstate
+
 terraform providers
 .
 └── provider.simple-datasource
 
+test ! -f /terraform-provider-pyrraform-test.log
+test ! -f terraform.tfstate
 
 terraform init
 
@@ -20,6 +31,7 @@ If you ever set or change modules or backend configuration for Terraform,
 rerun this command to reinitialize your working directory. If you forget, other
 commands will detect it and remind you to do so if necessary.[0m
 test ! -f /terraform-provider-pyrraform-test.log
+test ! -f terraform.tfstate
 
 terraform providers schema -json | python -m json.tool
 {

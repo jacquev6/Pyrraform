@@ -56,13 +56,11 @@ def run_provider(provider_class: Type[Provider]) -> NoReturn:
     raw_base64_certificate = ''.join(certificate.decode('utf-8').splitlines()[1:-1]).rstrip("=")
 
     if os.environ.get("TF_PLUGIN_MAGIC_COOKIE") != "d602bf8f470bc67ca7faa0386276bbdd4330efaf76d1a219cb4d6991ca9872b2":
-        print(
-            textwrap.dedent("""\
-                This Python program is a Terraform plugin. These are not meant to be executed directly.
-                Please execute terraform, which will load any plugins automatically\
-            """),
-            file=sys.stderr,
-        )
+        for line in [
+                "This Python program is a Terraform plugin. These are not meant to be executed directly.",
+                "Please execute terraform, which will load any plugins automatically.",
+        ]:
+            print(line, file=sys.stderr)
         exit(1)
 
     server = grpc.server(concurrent.futures.ThreadPoolExecutor(max_workers=10))
@@ -161,10 +159,10 @@ class ProviderServicer(tfplugin5_0_pb2_grpc.ProviderServicer):
     def GetSchema(self, request, context):
         log.info("GetSchema")
         return tfplugin5_0_pb2.GetProviderSchema.Response(
-            provider=self.__provider_class.config_schema.pb_schema,
+            provider=self.__provider_class.config_schema.to_protobuf(),
             resource_schemas={},
             data_source_schemas={
-                full_name: data_source_class.config_schema.pb_schema
+                full_name: data_source_class.config_schema.to_protobuf()
                 for (full_name, data_source_class) in self.__data_source_classes.items()
             },
         )

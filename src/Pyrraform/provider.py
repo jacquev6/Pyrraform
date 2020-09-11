@@ -1,45 +1,18 @@
 from typing import Dict, Type
 import abc
+import json
 
 from . import tfplugin5_0_pb2
-
-
-class Schema:
-    # @todo Generate tfplugin5_0_pb2.Schema from structured definition instead of storing it
-    # Type system:
-    # https://github.com/zclconf/go-cty/blob/4e1b2a3ccc87ef459dac0e425f139c117a2d790f/cty/json.go#L16
-
-    # @todo Understand the difference between `required` and `optional` fields
-    # Hypothesis: `required` means the attribute must appear in the config file
-    # and `optional` allows the attribute to be absent from self.read's return value
-
-    # @todo Understand the `computed` field
-
-    # @todo Check for reserved attribute names
-    # More generaly, provide a function like terraform-plugin-sdk's InternalValidate, that
-    # "should be called in a unit test [...] to verify [...] that a resource is properly configured"
-
-    # @todo Double-check that "One of [optional or required] must be set if the value is not
-    # computed. That is: value either comes from the config, is computed, or is both."
-
-    # Reference code for schemas:
-    # - Meaning of tfplugin5_0_pb2.Schema.NestedBlock.NestingMode:
-    #   https://github.com/hashicorp/terraform-plugin-sdk/blob/v2.0.0/internal/configs/configschema/schema.go#L113-L155
-
-    _empty_pb_schema = tfplugin5_0_pb2.Schema(
-        block=tfplugin5_0_pb2.Schema.Block(
-            attributes=[],
-            block_types=[],
-        )
-    )
-
-    def __init__(self, pb_schema=_empty_pb_schema):
-        self.pb_schema = pb_schema
+from . import schema
 
 
 class DataSource(abc.ABC):
-    config_schema: Schema = Schema()
+    config_schema: schema.Schema = schema.empty
     # @todo Split config schema and output schema?
+
+    # @todo Check for reserved attribute names in config_schema
+    # More generaly, provide functions like terraform-plugin-sdk's InternalValidate, that
+    # "should be called in a unit test [...] to verify [...] properly configured"
 
     @classmethod
     def validate_config(cls, provider: "Provider", config: Dict) -> bool:
@@ -55,7 +28,7 @@ class DataSource(abc.ABC):
 
 
 class Provider:
-    config_schema: Schema = Schema()
+    config_schema: schema.Schema = schema.empty
 
     data_source_classes: Dict[str, Type[DataSource]] = {}
 
