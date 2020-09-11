@@ -43,6 +43,7 @@ class DumpConfigsDataSource(Pyrraform.DataSource):
 
     def read(self):
         ret = dict(self._config)
+        # @todo Move this update in the framework
         ret.update({
             "provider": str(self._provider._config),
             "datasource": str(self._config),

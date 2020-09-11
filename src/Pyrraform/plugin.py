@@ -35,6 +35,8 @@ def run_provider(provider_class: Type[Provider]) -> NoReturn:
     # Configure, ValidateDataSourceConfig, ReadDataSource, Shutdown would be enough.
     # Note that the PLUGIN_CLIENT_CERT changes.
 
+    # @todo Publish a lower-level function "run_provider_servicer"
+
     logging.basicConfig(
         filename="/terraform-provider-pyrraform-test.log",
         level=logging.INFO,
