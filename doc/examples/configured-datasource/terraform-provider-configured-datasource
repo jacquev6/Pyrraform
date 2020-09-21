@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import Pyrraform
-from Pyrraform import tfplugin5_0_pb2
 
 
 class DumpConfigsDataSource(Pyrraform.DataSource):

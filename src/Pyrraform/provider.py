@@ -35,6 +35,7 @@ class DataSource(abc.ABC):
         pass
 
 
+# @todo Provide a way to free resources allocated by providers (e.g. make them context managers?)
 class Provider:
     config_schema: schema.Schema = schema.empty
 
