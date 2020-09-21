@@ -51,8 +51,8 @@ def run_provider(provider_class: Type[Provider]) -> NoReturn:
 
     (certificate, private_key) = generate_certificate()
     log.debug(f"Server certificate: {certificate.decode('utf-8')}")
-    with open("provider-pyrraform-test.cert.pem", "wb") as f:
-        f.write(certificate)
+    # with open("provider-pyrraform-test.cert.pem", "wb") as f:
+    #     f.write(certificate)
     raw_base64_certificate = ''.join(certificate.decode('utf-8').splitlines()[1:-1]).rstrip("=")
 
     if os.environ.get("TF_PLUGIN_MAGIC_COOKIE") != "d602bf8f470bc67ca7faa0386276bbdd4330efaf76d1a219cb4d6991ca9872b2":

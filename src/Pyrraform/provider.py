@@ -19,8 +19,16 @@ class DataSource(abc.ABC):
         return True
 
     def __init__(self, provider: "Provider", config: Dict):
-        self._provider = provider
-        self._config = config
+        self.__provider = provider
+        self.__config = config
+
+    @property
+    def provider(self):
+        return self.__provider
+
+    @property
+    def config(self):
+        return self.__config
 
     @abc.abstractmethod
     def read(self) -> dict:
@@ -37,4 +45,8 @@ class Provider:
         return config
 
     def __init__(self, prepared_config: Dict):
-        self._config = prepared_config
+        self.__config = prepared_config
+
+    @property
+    def config(self):
+        return self.__config
