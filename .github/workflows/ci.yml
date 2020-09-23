@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v1
       - run: |
           development/doc/build.sh
-          git diff --exit-code docs
+          git diff --exit-code docs/*.html
   publish:
     name: Publish
     needs:
