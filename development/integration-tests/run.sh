@@ -25,9 +25,9 @@ done
 
 if [ ${#providers[@]} -eq 0 ]
 then
-  for d in $(find * -type d -depth 0)
+  for d in providers/*
   do
-    providers+=( $d )
+    providers+=( ${d#providers/} )
   done
 fi
 
@@ -44,44 +44,44 @@ for provider in ${providers[@]}; do
   echo $provider
   echo $provider | sed s/./=/g
   echo "Successes:"
-  for success in $provider/successes/*
+  for success in providers/$provider/successes/*
   do
-    success=${success#$provider/successes/}
+    success=${success#providers/$provider/successes/}
     echo $success
 
-    rm -rf /tmp/pyrraform-test-resources
-    cp -r $provider/successes/$success /tmp/pyrraform-test-resources
+    rm -rf /tmp/pyrraform-test-resources-$provider-$success
+    cp -r providers/$provider/successes/$success /tmp/pyrraform-test-resources-$provider-$success
     if ! docker run \
       --rm \
-      --volume $PWD/$provider/terraform-provider-$provider:/usr/local/bin/terraform-provider-$provider:ro \
+      --volume $PWD/providers/$provider/terraform-provider-$provider:/usr/local/bin/terraform-provider-$provider:ro \
       --volume $PWD/run-test.sh:/run-test.sh:ro \
-      --volume /tmp/pyrraform-test-resources:/resources \
+      --volume /tmp/pyrraform-test-resources-$provider-$success:/resources \
       --workdir /resources \
       $docker_image \
       bash /run-test.sh \
-    >$provider/successes/$success/output.txt 2>&1
+    >providers/$provider/successes/$success/output.txt 2>&1
     then
       echo "Error on an expected success"
       false
     fi
   done
   echo "Errors:"
-  for error in $provider/errors/*
+  for error in providers/$provider/errors/*
   do
-    error=${error#$provider/errors/}
+    error=${error#providers/$provider/errors/}
     echo $error
 
-    rm -rf /tmp/pyrraform-test-resources
-    cp -r $provider/errors/$error /tmp/pyrraform-test-resources
+    rm -rf /tmp/pyrraform-test-resources-$provider-$error
+    cp -r providers/$provider/errors/$error /tmp/pyrraform-test-resources-$provider-$error
     if docker run \
       --rm \
-      --volume $PWD/$provider/terraform-provider-$provider:/usr/local/bin/terraform-provider-$provider:ro \
+      --volume $PWD/providers/$provider/terraform-provider-$provider:/usr/local/bin/terraform-provider-$provider:ro \
       --volume $PWD/run-test.sh:/run-test.sh:ro \
-      --volume /tmp/pyrraform-test-resources:/resources \
+      --volume /tmp/pyrraform-test-resources-$provider-$error:/resources \
       --workdir /resources \
       $docker_image \
       bash /run-test.sh \
-    >$provider/errors/$error/output.txt 2>&1
+    >providers/$provider/errors/$error/output.txt 2>&1
     then
       echo "Success on an expected error"
       false
