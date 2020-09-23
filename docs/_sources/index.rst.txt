@@ -1,5 +1,5 @@
-==========================
-terraform-provider-freebox
-==========================
+=========
+Pyrraform
+=========
 
 .. include:: ../../README.rst
