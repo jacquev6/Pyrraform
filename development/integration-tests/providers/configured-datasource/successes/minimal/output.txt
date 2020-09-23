@@ -3,7 +3,7 @@
 /usr/local/bin/terraform-provider-* || true
 This Python program is a Terraform plugin. These are not meant to be executed directly.
 Please execute terraform, which will load any plugins automatically.
-sed "s/^........-......\....://" /terraform-provider-pyrraform-test.log
+sed "s/^........-......\....://" /terraform-provider-pyrraform-test.log >&2
 INFO:Pyrraform.plugin:Enter main with command-line ['/usr/local/bin/terraform-provider-configured-datasource']
 rm /terraform-provider-pyrraform-test.log
 test ! -f terraform.tfstate
@@ -166,7 +166,7 @@ terraform providers schema -json | python -m json.tool
         }
     }
 }
-sed "s/^........-......\....://" /terraform-provider-pyrraform-test.log
+sed "s/^........-......\....://" /terraform-provider-pyrraform-test.log >&2
 INFO:Pyrraform.plugin:Enter main with command-line ['/usr/local/bin/terraform-provider-configured-datasource']
 INFO:Pyrraform.plugin:Server started
 INFO:Pyrraform.plugin:GetSchema
@@ -189,7 +189,7 @@ persisted to local or remote state storage.
 This means that Terraform did not detect any differences between your
 configuration and real physical resources that exist. As a result, no
 actions need to be performed.[0m
-sed "s/^........-......\....://" /terraform-provider-pyrraform-test.log
+sed "s/^........-......\....://" /terraform-provider-pyrraform-test.log >&2
 INFO:Pyrraform.plugin:Enter main with command-line ['/usr/local/bin/terraform-provider-configured-datasource']
 INFO:Pyrraform.plugin:Server started
 INFO:Pyrraform.plugin:GetSchema
@@ -251,7 +251,7 @@ Outputs:
 
 datasource_config = {'datasource': None, 'datasource_attribute_boolean': None, 'datasource_attribute_number': None, 'datasource_attribute_number_list': None, 'datasource_attribute_object': None, 'datasource_attribute_string': None, 'datasource_attribute_string_list_list': None, 'datasource_attribute_string_required': 'here it is', 'datasource_block_list': [], 'datasource_block_map': {}, 'datasource_block_set': [], 'datasource_block_single_optional': None, 'datasource_block_single_required': {'block_attribute': 'required'}, 'provider': None}
 provider_config = {'provider_attribute_boolean': None, 'provider_attribute_number': None, 'provider_attribute_string': None}[0m
-sed "s/^........-......\....://" /terraform-provider-pyrraform-test.log
+sed "s/^........-......\....://" /terraform-provider-pyrraform-test.log >&2
 INFO:Pyrraform.plugin:Enter main with command-line ['/usr/local/bin/terraform-provider-configured-datasource']
 INFO:Pyrraform.plugin:Server started
 INFO:Pyrraform.plugin:GetSchema
@@ -364,7 +364,7 @@ terraform destroy -auto-approve
 [0m[1mdata.configured-datasource_dump-configs.configs: Refreshing state...[0m
 [0m[1m[32m
 Destroy complete! Resources: 0 destroyed.[0m
-sed "s/^........-......\....://" /terraform-provider-pyrraform-test.log
+sed "s/^........-......\....://" /terraform-provider-pyrraform-test.log >&2
 INFO:Pyrraform.plugin:Enter main with command-line ['/usr/local/bin/terraform-provider-configured-datasource']
 INFO:Pyrraform.plugin:Server started
 INFO:Pyrraform.plugin:GetSchema
@@ -442,7 +442,7 @@ persisted to local or remote state storage.
 This means that Terraform did not detect any differences between your
 configuration and real physical resources that exist. As a result, no
 actions need to be performed.[0m
-sed "s/^........-......\....://" /terraform-provider-pyrraform-test.log
+sed "s/^........-......\....://" /terraform-provider-pyrraform-test.log >&2
 INFO:Pyrraform.plugin:Enter main with command-line ['/usr/local/bin/terraform-provider-configured-datasource']
 INFO:Pyrraform.plugin:Server started
 INFO:Pyrraform.plugin:GetSchema

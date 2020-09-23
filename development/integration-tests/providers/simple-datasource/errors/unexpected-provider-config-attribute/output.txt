@@ -3,7 +3,7 @@
 /usr/local/bin/terraform-provider-* || true
 This Python program is a Terraform plugin. These are not meant to be executed directly.
 Please execute terraform, which will load any plugins automatically.
-sed "s/^........-......\....://" /terraform-provider-pyrraform-test.log
+sed "s/^........-......\....://" /terraform-provider-pyrraform-test.log >&2
 INFO:Pyrraform.plugin:Enter main with command-line ['/usr/local/bin/terraform-provider-simple-datasource']
 rm /terraform-provider-pyrraform-test.log
 test ! -f terraform.tfstate
@@ -57,7 +57,7 @@ terraform providers schema -json | python -m json.tool
         }
     }
 }
-sed "s/^........-......\....://" /terraform-provider-pyrraform-test.log
+sed "s/^........-......\....://" /terraform-provider-pyrraform-test.log >&2
 INFO:Pyrraform.plugin:Enter main with command-line ['/usr/local/bin/terraform-provider-simple-datasource']
 INFO:Pyrraform.plugin:Server started
 INFO:Pyrraform.plugin:GetSchema
