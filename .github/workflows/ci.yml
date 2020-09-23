@@ -1,6 +1,13 @@
 name: Continuous Integration
 on: push
 jobs:
+  integ-tests:
+    name: Run integration tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: |
+          development/integration-tests/run.sh
   docs:
     name: Check GitHub Pages are up-to-date
     runs-on: ubuntu-latest

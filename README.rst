@@ -1,5 +1,7 @@
 **WARNING, this project is in an early stage; you should probably not use it yet.**
 
+**@todo Support Terraform 0.13. (Release notes say that local providers discovery has changed)**
+
 *Pyrraform* is a Python (3.7+) SDK for `Terraform <https://www.terraform.io/>`_ (0.12).
 It allows creating Terraform `providers <https://www.terraform.io/docs/glossary.html#terraform-provider>`_ in pure Python.
 

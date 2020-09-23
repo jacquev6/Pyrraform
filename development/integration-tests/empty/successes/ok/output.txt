@@ -4,7 +4,7 @@
 This Python program is a Terraform plugin. These are not meant to be executed directly.
 Please execute terraform, which will load any plugins automatically.
 sed "s/^........-......\....://" /terraform-provider-pyrraform-test.log
-INFO:Pyrraform.plugin:Enter main with command-line ['/usr/local/bin/terraform-provider-empty', '/usr/local/bin/terraform-provider-uptimerobot']
+INFO:Pyrraform.plugin:Enter main with command-line ['/usr/local/bin/terraform-provider-empty']
 rm /terraform-provider-pyrraform-test.log
 test ! -f terraform.tfstate
 

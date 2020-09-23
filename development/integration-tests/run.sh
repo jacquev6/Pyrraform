@@ -31,7 +31,13 @@ then
   done
 fi
 
-docker_image=$(docker build --quiet $no_cache --file Dockerfile ../..)
+docker_image=$(
+  docker build \
+  --quiet \
+  $no_cache \
+  --file Dockerfile \
+  ../..
+)
 
 shopt -s nullglob
 for provider in ${providers[@]}; do
@@ -52,7 +58,7 @@ for provider in ${providers[@]}; do
       --volume /tmp/pyrraform-test-resources:/resources \
       --workdir /resources \
       $docker_image \
-      /run-test.sh \
+      bash /run-test.sh \
     >$provider/successes/$success/output.txt 2>&1
     then
       echo "Error on an expected success"
@@ -74,7 +80,7 @@ for provider in ${providers[@]}; do
       --volume /tmp/pyrraform-test-resources:/resources \
       --workdir /resources \
       $docker_image \
-      /run-test.sh \
+      bash /run-test.sh \
     >$provider/errors/$error/output.txt 2>&1
     then
       echo "Success on an expected error"

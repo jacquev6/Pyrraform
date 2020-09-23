@@ -4,7 +4,7 @@
 This Python program is a Terraform plugin. These are not meant to be executed directly.
 Please execute terraform, which will load any plugins automatically.
 sed "s/^........-......\....://" /terraform-provider-pyrraform-test.log
-INFO:Pyrraform.plugin:Enter main with command-line ['/usr/local/bin/terraform-provider-configured-datasource', '/usr/local/bin/terraform-provider-uptimerobot']
+INFO:Pyrraform.plugin:Enter main with command-line ['/usr/local/bin/terraform-provider-configured-datasource']
 rm /terraform-provider-pyrraform-test.log
 test ! -f terraform.tfstate
 
@@ -199,12 +199,12 @@ INFO:Pyrraform.plugin:Enter main with command-line ['/usr/local/bin/terraform-pr
 INFO:Pyrraform.plugin:Server started
 INFO:Pyrraform.plugin:GetSchema
 INFO:Pyrraform.plugin:PrepareProviderConfig: config {
-  msgpack: "\203\272provider_attribute_boolean\300\271provider_attribute_number\300\271provider_attribute_string\300"
+  msgpack: "\203\272provider_attribute_boolean\303\271provider_attribute_number*\271provider_attribute_string\251forty-two"
 }
 
 INFO:Pyrraform.plugin:ValidateDataSourceConfig: type_name: "configured-datasource_dump-configs"
 config {
-  msgpack: "\216\252datasource\300\274datasource_attribute_boolean\300\273datasource_attribute_number\300\331 datasource_attribute_number_list\300\273datasource_attribute_object\300\273datasource_attribute_string\300\331%datasource_attribute_string_list_list\300\331$datasource_attribute_string_required\252here it is\265datasource_block_list\220\264datasource_block_map\200\264datasource_block_set\220\331 datasource_block_single_optional\300\331 datasource_block_single_required\201\257block_attribute\250required\250provider\300"
+  msgpack: "\216\252datasource\300\274datasource_attribute_boolean\302\273datasource_attribute_number9\331 datasource_attribute_number_list\223+,-\273datasource_attribute_object\201\241a.\273datasource_attribute_string\253fifty-seven\331%datasource_attribute_string_list_list\223\222\241a\241b\220\223\241c\241d\241e\331$datasource_attribute_string_required\252here it is\265datasource_block_list\223\201\257block_attribute\246list 1\201\257block_attribute\246list 2\201\257block_attribute\246list 2\264datasource_block_map\202\241a\201\257block_attribute\245map 1\241b\201\257block_attribute\245map 2\264datasource_block_set\222\201\257block_attribute\245set 1\201\257block_attribute\245set 2\331 datasource_block_single_optional\201\257block_attribute\245foo 3\331 datasource_block_single_required\201\257block_attribute\250required\250provider\300"
 }
 
 INFO:Pyrraform.plugin:Shutdown
@@ -214,17 +214,17 @@ INFO:Pyrraform.plugin:Server started
 INFO:Pyrraform.plugin:GetSchema
 INFO:Pyrraform.plugin:Configure: terraform_version: "0.12.29"
 config {
-  msgpack: "\203\272provider_attribute_boolean\300\271provider_attribute_number\300\271provider_attribute_string\300"
+  msgpack: "\203\272provider_attribute_boolean\303\271provider_attribute_number*\271provider_attribute_string\251forty-two"
 }
 
 INFO:Pyrraform.plugin:ValidateDataSourceConfig: type_name: "configured-datasource_dump-configs"
 config {
-  msgpack: "\216\252datasource\300\274datasource_attribute_boolean\300\273datasource_attribute_number\300\331 datasource_attribute_number_list\300\273datasource_attribute_object\300\273datasource_attribute_string\300\331%datasource_attribute_string_list_list\300\331$datasource_attribute_string_required\252here it is\265datasource_block_list\220\264datasource_block_map\200\264datasource_block_set\220\331 datasource_block_single_optional\300\331 datasource_block_single_required\201\257block_attribute\250required\250provider\300"
+  msgpack: "\216\252datasource\300\274datasource_attribute_boolean\302\273datasource_attribute_number9\331 datasource_attribute_number_list\223+,-\273datasource_attribute_object\201\241a.\273datasource_attribute_string\253fifty-seven\331%datasource_attribute_string_list_list\223\222\241a\241b\220\223\241c\241d\241e\331$datasource_attribute_string_required\252here it is\265datasource_block_list\223\201\257block_attribute\246list 1\201\257block_attribute\246list 2\201\257block_attribute\246list 2\264datasource_block_map\202\241a\201\257block_attribute\245map 1\241b\201\257block_attribute\245map 2\264datasource_block_set\222\201\257block_attribute\245set 1\201\257block_attribute\245set 2\331 datasource_block_single_optional\201\257block_attribute\245foo 3\331 datasource_block_single_required\201\257block_attribute\250required\250provider\300"
 }
 
 INFO:Pyrraform.plugin:ReadDataSource: type_name: "configured-datasource_dump-configs"
 config {
-  msgpack: "\216\252datasource\300\274datasource_attribute_boolean\300\273datasource_attribute_number\300\331 datasource_attribute_number_list\300\273datasource_attribute_object\300\273datasource_attribute_string\300\331%datasource_attribute_string_list_list\300\331$datasource_attribute_string_required\252here it is\265datasource_block_list\220\264datasource_block_map\200\264datasource_block_set\220\331 datasource_block_single_optional\300\331 datasource_block_single_required\201\257block_attribute\250required\250provider\300"
+  msgpack: "\216\252datasource\300\274datasource_attribute_boolean\302\273datasource_attribute_number9\331 datasource_attribute_number_list\223+,-\273datasource_attribute_object\201\241a.\273datasource_attribute_string\253fifty-seven\331%datasource_attribute_string_list_list\223\222\241a\241b\220\223\241c\241d\241e\331$datasource_attribute_string_required\252here it is\265datasource_block_list\223\201\257block_attribute\246list 1\201\257block_attribute\246list 2\201\257block_attribute\246list 2\264datasource_block_map\202\241a\201\257block_attribute\245map 1\241b\201\257block_attribute\245map 2\264datasource_block_set\222\201\257block_attribute\245set 1\201\257block_attribute\245set 2\331 datasource_block_single_optional\201\257block_attribute\245foo 3\331 datasource_block_single_required\201\257block_attribute\250required\250provider\300"
 }
 
 INFO:Pyrraform.plugin:Shutdown
@@ -234,7 +234,7 @@ INFO:Pyrraform.plugin:Server started
 INFO:Pyrraform.plugin:GetSchema
 INFO:Pyrraform.plugin:Configure: terraform_version: "0.12.29"
 config {
-  msgpack: "\203\272provider_attribute_boolean\300\271provider_attribute_number\300\271provider_attribute_string\300"
+  msgpack: "\203\272provider_attribute_boolean\303\271provider_attribute_number*\271provider_attribute_string\251forty-two"
 }
 
 INFO:Pyrraform.plugin:Shutdown
@@ -249,8 +249,8 @@ Apply complete! Resources: 0 added, 0 changed, 0 destroyed.[0m
 [0m[1m[32m
 Outputs:
 
-datasource_config = {'datasource': None, 'datasource_attribute_boolean': None, 'datasource_attribute_number': None, 'datasource_attribute_number_list': None, 'datasource_attribute_object': None, 'datasource_attribute_string': None, 'datasource_attribute_string_list_list': None, 'datasource_attribute_string_required': 'here it is', 'datasource_block_list': [], 'datasource_block_map': {}, 'datasource_block_set': [], 'datasource_block_single_optional': None, 'datasource_block_single_required': {'block_attribute': 'required'}, 'provider': None}
-provider_config = {'provider_attribute_boolean': None, 'provider_attribute_number': None, 'provider_attribute_string': None}[0m
+datasource_config = {'datasource': None, 'datasource_attribute_boolean': False, 'datasource_attribute_number': 57, 'datasource_attribute_number_list': [43, 44, 45], 'datasource_attribute_object': {'a': 46}, 'datasource_attribute_string': 'fifty-seven', 'datasource_attribute_string_list_list': [['a', 'b'], [], ['c', 'd', 'e']], 'datasource_attribute_string_required': 'here it is', 'datasource_block_list': [{'block_attribute': 'list 1'}, {'block_attribute': 'list 2'}, {'block_attribute': 'list 2'}], 'datasource_block_map': {'a': {'block_attribute': 'map 1'}, 'b': {'block_attribute': 'map 2'}}, 'datasource_block_set': [{'block_attribute': 'set 1'}, {'block_attribute': 'set 2'}], 'datasource_block_single_optional': {'block_attribute': 'foo 3'}, 'datasource_block_single_required': {'block_attribute': 'required'}, 'provider': None}
+provider_config = {'provider_attribute_boolean': True, 'provider_attribute_number': 42, 'provider_attribute_string': 'forty-two'}[0m
 sed "s/^........-......\....://" /terraform-provider-pyrraform-test.log
 INFO:Pyrraform.plugin:Enter main with command-line ['/usr/local/bin/terraform-provider-configured-datasource']
 INFO:Pyrraform.plugin:Server started
@@ -261,12 +261,12 @@ INFO:Pyrraform.plugin:Enter main with command-line ['/usr/local/bin/terraform-pr
 INFO:Pyrraform.plugin:Server started
 INFO:Pyrraform.plugin:GetSchema
 INFO:Pyrraform.plugin:PrepareProviderConfig: config {
-  msgpack: "\203\272provider_attribute_boolean\300\271provider_attribute_number\300\271provider_attribute_string\300"
+  msgpack: "\203\272provider_attribute_boolean\303\271provider_attribute_number*\271provider_attribute_string\251forty-two"
 }
 
 INFO:Pyrraform.plugin:ValidateDataSourceConfig: type_name: "configured-datasource_dump-configs"
 config {
-  msgpack: "\216\252datasource\300\274datasource_attribute_boolean\300\273datasource_attribute_number\300\331 datasource_attribute_number_list\300\273datasource_attribute_object\300\273datasource_attribute_string\300\331%datasource_attribute_string_list_list\300\331$datasource_attribute_string_required\252here it is\265datasource_block_list\220\264datasource_block_map\200\264datasource_block_set\220\331 datasource_block_single_optional\300\331 datasource_block_single_required\201\257block_attribute\250required\250provider\300"
+  msgpack: "\216\252datasource\300\274datasource_attribute_boolean\302\273datasource_attribute_number9\331 datasource_attribute_number_list\223+,-\273datasource_attribute_object\201\241a.\273datasource_attribute_string\253fifty-seven\331%datasource_attribute_string_list_list\223\222\241a\241b\220\223\241c\241d\241e\331$datasource_attribute_string_required\252here it is\265datasource_block_list\223\201\257block_attribute\246list 1\201\257block_attribute\246list 2\201\257block_attribute\246list 2\264datasource_block_map\202\241a\201\257block_attribute\245map 1\241b\201\257block_attribute\245map 2\264datasource_block_set\222\201\257block_attribute\245set 1\201\257block_attribute\245set 2\331 datasource_block_single_optional\201\257block_attribute\245foo 3\331 datasource_block_single_required\201\257block_attribute\250required\250provider\300"
 }
 
 INFO:Pyrraform.plugin:Shutdown
@@ -276,17 +276,17 @@ INFO:Pyrraform.plugin:Server started
 INFO:Pyrraform.plugin:GetSchema
 INFO:Pyrraform.plugin:Configure: terraform_version: "0.12.29"
 config {
-  msgpack: "\203\272provider_attribute_boolean\300\271provider_attribute_number\300\271provider_attribute_string\300"
+  msgpack: "\203\272provider_attribute_boolean\303\271provider_attribute_number*\271provider_attribute_string\251forty-two"
 }
 
 INFO:Pyrraform.plugin:ValidateDataSourceConfig: type_name: "configured-datasource_dump-configs"
 config {
-  msgpack: "\216\252datasource\300\274datasource_attribute_boolean\300\273datasource_attribute_number\300\331 datasource_attribute_number_list\300\273datasource_attribute_object\300\273datasource_attribute_string\300\331%datasource_attribute_string_list_list\300\331$datasource_attribute_string_required\252here it is\265datasource_block_list\220\264datasource_block_map\200\264datasource_block_set\220\331 datasource_block_single_optional\300\331 datasource_block_single_required\201\257block_attribute\250required\250provider\300"
+  msgpack: "\216\252datasource\300\274datasource_attribute_boolean\302\273datasource_attribute_number9\331 datasource_attribute_number_list\223+,-\273datasource_attribute_object\201\241a.\273datasource_attribute_string\253fifty-seven\331%datasource_attribute_string_list_list\223\222\241a\241b\220\223\241c\241d\241e\331$datasource_attribute_string_required\252here it is\265datasource_block_list\223\201\257block_attribute\246list 1\201\257block_attribute\246list 2\201\257block_attribute\246list 2\264datasource_block_map\202\241a\201\257block_attribute\245map 1\241b\201\257block_attribute\245map 2\264datasource_block_set\222\201\257block_attribute\245set 1\201\257block_attribute\245set 2\331 datasource_block_single_optional\201\257block_attribute\245foo 3\331 datasource_block_single_required\201\257block_attribute\250required\250provider\300"
 }
 
 INFO:Pyrraform.plugin:ReadDataSource: type_name: "configured-datasource_dump-configs"
 config {
-  msgpack: "\216\252datasource\300\274datasource_attribute_boolean\300\273datasource_attribute_number\300\331 datasource_attribute_number_list\300\273datasource_attribute_object\300\273datasource_attribute_string\300\331%datasource_attribute_string_list_list\300\331$datasource_attribute_string_required\252here it is\265datasource_block_list\220\264datasource_block_map\200\264datasource_block_set\220\331 datasource_block_single_optional\300\331 datasource_block_single_required\201\257block_attribute\250required\250provider\300"
+  msgpack: "\216\252datasource\300\274datasource_attribute_boolean\302\273datasource_attribute_number9\331 datasource_attribute_number_list\223+,-\273datasource_attribute_object\201\241a.\273datasource_attribute_string\253fifty-seven\331%datasource_attribute_string_list_list\223\222\241a\241b\220\223\241c\241d\241e\331$datasource_attribute_string_required\252here it is\265datasource_block_list\223\201\257block_attribute\246list 1\201\257block_attribute\246list 2\201\257block_attribute\246list 2\264datasource_block_map\202\241a\201\257block_attribute\245map 1\241b\201\257block_attribute\245map 2\264datasource_block_set\222\201\257block_attribute\245set 1\201\257block_attribute\245set 2\331 datasource_block_single_optional\201\257block_attribute\245foo 3\331 datasource_block_single_required\201\257block_attribute\250required\250provider\300"
 }
 
 INFO:Pyrraform.plugin:Shutdown
@@ -296,7 +296,7 @@ INFO:Pyrraform.plugin:Server started
 INFO:Pyrraform.plugin:GetSchema
 INFO:Pyrraform.plugin:Configure: terraform_version: "0.12.29"
 config {
-  msgpack: "\203\272provider_attribute_boolean\300\271provider_attribute_number\300\271provider_attribute_string\300"
+  msgpack: "\203\272provider_attribute_boolean\303\271provider_attribute_number*\271provider_attribute_string\251forty-two"
 }
 
 INFO:Pyrraform.plugin:Shutdown
@@ -306,7 +306,7 @@ INFO:Pyrraform.plugin:Server started
 INFO:Pyrraform.plugin:GetSchema
 INFO:Pyrraform.plugin:Configure: terraform_version: "0.12.29"
 config {
-  msgpack: "\203\272provider_attribute_boolean\300\271provider_attribute_number\300\271provider_attribute_string\300"
+  msgpack: "\203\272provider_attribute_boolean\303\271provider_attribute_number*\271provider_attribute_string\251forty-two"
 }
 
 INFO:Pyrraform.plugin:Shutdown
@@ -319,11 +319,11 @@ grep -v "lineage" terraform.tfstate
   "serial": 1,
   "outputs": {
     "datasource_config": {
-      "value": "{'datasource': None, 'datasource_attribute_boolean': None, 'datasource_attribute_number': None, 'datasource_attribute_number_list': None, 'datasource_attribute_object': None, 'datasource_attribute_string': None, 'datasource_attribute_string_list_list': None, 'datasource_attribute_string_required': 'here it is', 'datasource_block_list': [], 'datasource_block_map': {}, 'datasource_block_set': [], 'datasource_block_single_optional': None, 'datasource_block_single_required': {'block_attribute': 'required'}, 'provider': None}",
+      "value": "{'datasource': None, 'datasource_attribute_boolean': False, 'datasource_attribute_number': 57, 'datasource_attribute_number_list': [43, 44, 45], 'datasource_attribute_object': {'a': 46}, 'datasource_attribute_string': 'fifty-seven', 'datasource_attribute_string_list_list': [['a', 'b'], [], ['c', 'd', 'e']], 'datasource_attribute_string_required': 'here it is', 'datasource_block_list': [{'block_attribute': 'list 1'}, {'block_attribute': 'list 2'}, {'block_attribute': 'list 2'}], 'datasource_block_map': {'a': {'block_attribute': 'map 1'}, 'b': {'block_attribute': 'map 2'}}, 'datasource_block_set': [{'block_attribute': 'set 1'}, {'block_attribute': 'set 2'}], 'datasource_block_single_optional': {'block_attribute': 'foo 3'}, 'datasource_block_single_required': {'block_attribute': 'required'}, 'provider': None}",
       "type": "string"
     },
     "provider_config": {
-      "value": "{'provider_attribute_boolean': None, 'provider_attribute_number': None, 'provider_attribute_string': None}",
+      "value": "{'provider_attribute_boolean': True, 'provider_attribute_number': 42, 'provider_attribute_string': 'forty-two'}",
       "type": "string"
     }
   },
@@ -337,22 +337,65 @@ grep -v "lineage" terraform.tfstate
         {
           "schema_version": 0,
           "attributes": {
-            "datasource": "{'datasource': None, 'datasource_attribute_boolean': None, 'datasource_attribute_number': None, 'datasource_attribute_number_list': None, 'datasource_attribute_object': None, 'datasource_attribute_string': None, 'datasource_attribute_string_list_list': None, 'datasource_attribute_string_required': 'here it is', 'datasource_block_list': [], 'datasource_block_map': {}, 'datasource_block_set': [], 'datasource_block_single_optional': None, 'datasource_block_single_required': {'block_attribute': 'required'}, 'provider': None}",
-            "datasource_attribute_boolean": null,
-            "datasource_attribute_number": null,
-            "datasource_attribute_number_list": null,
-            "datasource_attribute_object": null,
-            "datasource_attribute_string": null,
-            "datasource_attribute_string_list_list": null,
+            "datasource": "{'datasource': None, 'datasource_attribute_boolean': False, 'datasource_attribute_number': 57, 'datasource_attribute_number_list': [43, 44, 45], 'datasource_attribute_object': {'a': 46}, 'datasource_attribute_string': 'fifty-seven', 'datasource_attribute_string_list_list': [['a', 'b'], [], ['c', 'd', 'e']], 'datasource_attribute_string_required': 'here it is', 'datasource_block_list': [{'block_attribute': 'list 1'}, {'block_attribute': 'list 2'}, {'block_attribute': 'list 2'}], 'datasource_block_map': {'a': {'block_attribute': 'map 1'}, 'b': {'block_attribute': 'map 2'}}, 'datasource_block_set': [{'block_attribute': 'set 1'}, {'block_attribute': 'set 2'}], 'datasource_block_single_optional': {'block_attribute': 'foo 3'}, 'datasource_block_single_required': {'block_attribute': 'required'}, 'provider': None}",
+            "datasource_attribute_boolean": false,
+            "datasource_attribute_number": 57,
+            "datasource_attribute_number_list": [
+              43,
+              44,
+              45
+            ],
+            "datasource_attribute_object": {
+              "a": 46
+            },
+            "datasource_attribute_string": "fifty-seven",
+            "datasource_attribute_string_list_list": [
+              [
+                "a",
+                "b"
+              ],
+              [],
+              [
+                "c",
+                "d",
+                "e"
+              ]
+            ],
             "datasource_attribute_string_required": "here it is",
-            "datasource_block_list": [],
-            "datasource_block_map": {},
-            "datasource_block_set": [],
-            "datasource_block_single_optional": null,
+            "datasource_block_list": [
+              {
+                "block_attribute": "list 1"
+              },
+              {
+                "block_attribute": "list 2"
+              },
+              {
+                "block_attribute": "list 2"
+              }
+            ],
+            "datasource_block_map": {
+              "a": {
+                "block_attribute": "map 1"
+              },
+              "b": {
+                "block_attribute": "map 2"
+              }
+            },
+            "datasource_block_set": [
+              {
+                "block_attribute": "set 1"
+              },
+              {
+                "block_attribute": "set 2"
+              }
+            ],
+            "datasource_block_single_optional": {
+              "block_attribute": "foo 3"
+            },
             "datasource_block_single_required": {
               "block_attribute": "required"
             },
-            "provider": "{'provider_attribute_boolean': None, 'provider_attribute_number': None, 'provider_attribute_string': None}"
+            "provider": "{'provider_attribute_boolean': True, 'provider_attribute_number': 42, 'provider_attribute_string': 'forty-two'}"
           }
         }
       ]
@@ -374,12 +417,12 @@ INFO:Pyrraform.plugin:Enter main with command-line ['/usr/local/bin/terraform-pr
 INFO:Pyrraform.plugin:Server started
 INFO:Pyrraform.plugin:GetSchema
 INFO:Pyrraform.plugin:PrepareProviderConfig: config {
-  msgpack: "\203\272provider_attribute_boolean\300\271provider_attribute_number\300\271provider_attribute_string\300"
+  msgpack: "\203\272provider_attribute_boolean\303\271provider_attribute_number*\271provider_attribute_string\251forty-two"
 }
 
 INFO:Pyrraform.plugin:ValidateDataSourceConfig: type_name: "configured-datasource_dump-configs"
 config {
-  msgpack: "\216\252datasource\300\274datasource_attribute_boolean\300\273datasource_attribute_number\300\331 datasource_attribute_number_list\300\273datasource_attribute_object\300\273datasource_attribute_string\300\331%datasource_attribute_string_list_list\300\331$datasource_attribute_string_required\252here it is\265datasource_block_list\220\264datasource_block_map\200\264datasource_block_set\220\331 datasource_block_single_optional\300\331 datasource_block_single_required\201\257block_attribute\250required\250provider\300"
+  msgpack: "\216\252datasource\300\274datasource_attribute_boolean\302\273datasource_attribute_number9\331 datasource_attribute_number_list\223+,-\273datasource_attribute_object\201\241a.\273datasource_attribute_string\253fifty-seven\331%datasource_attribute_string_list_list\223\222\241a\241b\220\223\241c\241d\241e\331$datasource_attribute_string_required\252here it is\265datasource_block_list\223\201\257block_attribute\246list 1\201\257block_attribute\246list 2\201\257block_attribute\246list 2\264datasource_block_map\202\241a\201\257block_attribute\245map 1\241b\201\257block_attribute\245map 2\264datasource_block_set\222\201\257block_attribute\245set 1\201\257block_attribute\245set 2\331 datasource_block_single_optional\201\257block_attribute\245foo 3\331 datasource_block_single_required\201\257block_attribute\250required\250provider\300"
 }
 
 INFO:Pyrraform.plugin:Shutdown
@@ -389,17 +432,17 @@ INFO:Pyrraform.plugin:Server started
 INFO:Pyrraform.plugin:GetSchema
 INFO:Pyrraform.plugin:Configure: terraform_version: "0.12.29"
 config {
-  msgpack: "\203\272provider_attribute_boolean\300\271provider_attribute_number\300\271provider_attribute_string\300"
+  msgpack: "\203\272provider_attribute_boolean\303\271provider_attribute_number*\271provider_attribute_string\251forty-two"
 }
 
 INFO:Pyrraform.plugin:ValidateDataSourceConfig: type_name: "configured-datasource_dump-configs"
 config {
-  msgpack: "\216\252datasource\300\274datasource_attribute_boolean\300\273datasource_attribute_number\300\331 datasource_attribute_number_list\300\273datasource_attribute_object\300\273datasource_attribute_string\300\331%datasource_attribute_string_list_list\300\331$datasource_attribute_string_required\252here it is\265datasource_block_list\220\264datasource_block_map\200\264datasource_block_set\220\331 datasource_block_single_optional\300\331 datasource_block_single_required\201\257block_attribute\250required\250provider\300"
+  msgpack: "\216\252datasource\300\274datasource_attribute_boolean\302\273datasource_attribute_number9\331 datasource_attribute_number_list\223+,-\273datasource_attribute_object\201\241a.\273datasource_attribute_string\253fifty-seven\331%datasource_attribute_string_list_list\223\222\241a\241b\220\223\241c\241d\241e\331$datasource_attribute_string_required\252here it is\265datasource_block_list\223\201\257block_attribute\246list 1\201\257block_attribute\246list 2\201\257block_attribute\246list 2\264datasource_block_map\202\241a\201\257block_attribute\245map 1\241b\201\257block_attribute\245map 2\264datasource_block_set\222\201\257block_attribute\245set 1\201\257block_attribute\245set 2\331 datasource_block_single_optional\201\257block_attribute\245foo 3\331 datasource_block_single_required\201\257block_attribute\250required\250provider\300"
 }
 
 INFO:Pyrraform.plugin:ReadDataSource: type_name: "configured-datasource_dump-configs"
 config {
-  msgpack: "\216\252datasource\300\274datasource_attribute_boolean\300\273datasource_attribute_number\300\331 datasource_attribute_number_list\300\273datasource_attribute_object\300\273datasource_attribute_string\300\331%datasource_attribute_string_list_list\300\331$datasource_attribute_string_required\252here it is\265datasource_block_list\220\264datasource_block_map\200\264datasource_block_set\220\331 datasource_block_single_optional\300\331 datasource_block_single_required\201\257block_attribute\250required\250provider\300"
+  msgpack: "\216\252datasource\300\274datasource_attribute_boolean\302\273datasource_attribute_number9\331 datasource_attribute_number_list\223+,-\273datasource_attribute_object\201\241a.\273datasource_attribute_string\253fifty-seven\331%datasource_attribute_string_list_list\223\222\241a\241b\220\223\241c\241d\241e\331$datasource_attribute_string_required\252here it is\265datasource_block_list\223\201\257block_attribute\246list 1\201\257block_attribute\246list 2\201\257block_attribute\246list 2\264datasource_block_map\202\241a\201\257block_attribute\245map 1\241b\201\257block_attribute\245map 2\264datasource_block_set\222\201\257block_attribute\245set 1\201\257block_attribute\245set 2\331 datasource_block_single_optional\201\257block_attribute\245foo 3\331 datasource_block_single_required\201\257block_attribute\250required\250provider\300"
 }
 
 INFO:Pyrraform.plugin:Shutdown
@@ -411,7 +454,7 @@ INFO:Pyrraform.plugin:Server started
 INFO:Pyrraform.plugin:GetSchema
 INFO:Pyrraform.plugin:Configure: terraform_version: "0.12.29"
 config {
-  msgpack: "\203\272provider_attribute_boolean\300\271provider_attribute_number\300\271provider_attribute_string\300"
+  msgpack: "\203\272provider_attribute_boolean\303\271provider_attribute_number*\271provider_attribute_string\251forty-two"
 }
 
 INFO:Pyrraform.plugin:Shutdown
@@ -452,12 +495,12 @@ INFO:Pyrraform.plugin:Enter main with command-line ['/usr/local/bin/terraform-pr
 INFO:Pyrraform.plugin:Server started
 INFO:Pyrraform.plugin:GetSchema
 INFO:Pyrraform.plugin:PrepareProviderConfig: config {
-  msgpack: "\203\272provider_attribute_boolean\300\271provider_attribute_number\300\271provider_attribute_string\300"
+  msgpack: "\203\272provider_attribute_boolean\303\271provider_attribute_number*\271provider_attribute_string\251forty-two"
 }
 
 INFO:Pyrraform.plugin:ValidateDataSourceConfig: type_name: "configured-datasource_dump-configs"
 config {
-  msgpack: "\216\252datasource\300\274datasource_attribute_boolean\300\273datasource_attribute_number\300\331 datasource_attribute_number_list\300\273datasource_attribute_object\300\273datasource_attribute_string\300\331%datasource_attribute_string_list_list\300\331$datasource_attribute_string_required\252here it is\265datasource_block_list\220\264datasource_block_map\200\264datasource_block_set\220\331 datasource_block_single_optional\300\331 datasource_block_single_required\201\257block_attribute\250required\250provider\300"
+  msgpack: "\216\252datasource\300\274datasource_attribute_boolean\302\273datasource_attribute_number9\331 datasource_attribute_number_list\223+,-\273datasource_attribute_object\201\241a.\273datasource_attribute_string\253fifty-seven\331%datasource_attribute_string_list_list\223\222\241a\241b\220\223\241c\241d\241e\331$datasource_attribute_string_required\252here it is\265datasource_block_list\223\201\257block_attribute\246list 1\201\257block_attribute\246list 2\201\257block_attribute\246list 2\264datasource_block_map\202\241a\201\257block_attribute\245map 1\241b\201\257block_attribute\245map 2\264datasource_block_set\222\201\257block_attribute\245set 1\201\257block_attribute\245set 2\331 datasource_block_single_optional\201\257block_attribute\245foo 3\331 datasource_block_single_required\201\257block_attribute\250required\250provider\300"
 }
 
 INFO:Pyrraform.plugin:Shutdown
@@ -467,17 +510,17 @@ INFO:Pyrraform.plugin:Server started
 INFO:Pyrraform.plugin:GetSchema
 INFO:Pyrraform.plugin:Configure: terraform_version: "0.12.29"
 config {
-  msgpack: "\203\272provider_attribute_boolean\300\271provider_attribute_number\300\271provider_attribute_string\300"
+  msgpack: "\203\272provider_attribute_boolean\303\271provider_attribute_number*\271provider_attribute_string\251forty-two"
 }
 
 INFO:Pyrraform.plugin:ValidateDataSourceConfig: type_name: "configured-datasource_dump-configs"
 config {
-  msgpack: "\216\252datasource\300\274datasource_attribute_boolean\300\273datasource_attribute_number\300\331 datasource_attribute_number_list\300\273datasource_attribute_object\300\273datasource_attribute_string\300\331%datasource_attribute_string_list_list\300\331$datasource_attribute_string_required\252here it is\265datasource_block_list\220\264datasource_block_map\200\264datasource_block_set\220\331 datasource_block_single_optional\300\331 datasource_block_single_required\201\257block_attribute\250required\250provider\300"
+  msgpack: "\216\252datasource\300\274datasource_attribute_boolean\302\273datasource_attribute_number9\331 datasource_attribute_number_list\223+,-\273datasource_attribute_object\201\241a.\273datasource_attribute_string\253fifty-seven\331%datasource_attribute_string_list_list\223\222\241a\241b\220\223\241c\241d\241e\331$datasource_attribute_string_required\252here it is\265datasource_block_list\223\201\257block_attribute\246list 1\201\257block_attribute\246list 2\201\257block_attribute\246list 2\264datasource_block_map\202\241a\201\257block_attribute\245map 1\241b\201\257block_attribute\245map 2\264datasource_block_set\222\201\257block_attribute\245set 1\201\257block_attribute\245set 2\331 datasource_block_single_optional\201\257block_attribute\245foo 3\331 datasource_block_single_required\201\257block_attribute\250required\250provider\300"
 }
 
 INFO:Pyrraform.plugin:ReadDataSource: type_name: "configured-datasource_dump-configs"
 config {
-  msgpack: "\216\252datasource\300\274datasource_attribute_boolean\300\273datasource_attribute_number\300\331 datasource_attribute_number_list\300\273datasource_attribute_object\300\273datasource_attribute_string\300\331%datasource_attribute_string_list_list\300\331$datasource_attribute_string_required\252here it is\265datasource_block_list\220\264datasource_block_map\200\264datasource_block_set\220\331 datasource_block_single_optional\300\331 datasource_block_single_required\201\257block_attribute\250required\250provider\300"
+  msgpack: "\216\252datasource\300\274datasource_attribute_boolean\302\273datasource_attribute_number9\331 datasource_attribute_number_list\223+,-\273datasource_attribute_object\201\241a.\273datasource_attribute_string\253fifty-seven\331%datasource_attribute_string_list_list\223\222\241a\241b\220\223\241c\241d\241e\331$datasource_attribute_string_required\252here it is\265datasource_block_list\223\201\257block_attribute\246list 1\201\257block_attribute\246list 2\201\257block_attribute\246list 2\264datasource_block_map\202\241a\201\257block_attribute\245map 1\241b\201\257block_attribute\245map 2\264datasource_block_set\222\201\257block_attribute\245set 1\201\257block_attribute\245set 2\331 datasource_block_single_optional\201\257block_attribute\245foo 3\331 datasource_block_single_required\201\257block_attribute\250required\250provider\300"
 }
 
 INFO:Pyrraform.plugin:Shutdown
@@ -487,7 +530,7 @@ INFO:Pyrraform.plugin:Server started
 INFO:Pyrraform.plugin:GetSchema
 INFO:Pyrraform.plugin:Configure: terraform_version: "0.12.29"
 config {
-  msgpack: "\203\272provider_attribute_boolean\300\271provider_attribute_number\300\271provider_attribute_string\300"
+  msgpack: "\203\272provider_attribute_boolean\303\271provider_attribute_number*\271provider_attribute_string\251forty-two"
 }
 
 INFO:Pyrraform.plugin:Shutdown
