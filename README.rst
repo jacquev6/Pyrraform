@@ -23,3 +23,14 @@ Questions? Remarks? Bugs? Want to contribute? `Open an issue <https://github.com
 .. image:: https://img.shields.io/pypi/pyversions/Pyrraform?logo=pypi
     :alt: PyPI
     :target: https://pypi.org/project/Pyrraform/
+
+
+Quick start
+===========
+
+Installation
+------------
+
+Install from PyPI::
+
+    $ pip install Pyrraform
