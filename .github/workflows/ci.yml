@@ -19,6 +19,7 @@ jobs:
           git diff --exit-code docs/*.html
   publish:
     name: Publish
+    if: startsWith(github.event.ref, 'refs/tags')
     needs:
       - integ-tests
       - docs
@@ -31,9 +32,7 @@ jobs:
           python-version: 3.8
       - run: python setup.py sdist
       - run: test ${{ github.event.ref }} == refs/tags/$(grep ^version setup.py | cut -d '"' -f 2)
-        if: startsWith(github.event.ref, 'refs/tags')
       - name: Publish to PyPI
-        if: startsWith(github.event.ref, 'refs/tags')
         uses: pypa/gh-action-pypi-publish@master
         with:
           # [PyPI API token](https://pypi.org/manage/account/#api-tokens) set as a [secret](https://github.com/jacquev6/Pyrraform/settings/secrets)
